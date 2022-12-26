@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -72,9 +73,9 @@ namespace Robo_s_Memory_Game
             int numRows = (int)Math.Sqrt(GRIDDEBUGSIZE);
             int numColumns = (int)Math.Ceiling((double)GRIDDEBUGSIZE / numRows);
 
-            // Calculate the size of each button based on the number of rows and columns
-            int buttonWidth = 854 / numColumns;
-            int buttonHeight = 480 / numRows;
+            // Calculate the size of each button based on the number of rows and columns, and size of the grid area
+            int buttonWidth = (BackGroundImage.Width + 2) / numColumns;
+            int buttonHeight = BackGroundImage.Height / numRows;
 
             unasignedtiles = new List<Button>();
 
@@ -83,12 +84,16 @@ namespace Robo_s_Memory_Game
             {
                 for (int x = 0; x < numColumns; x++)
                 {
-                    Button button = new Button();
-                    button.Text = "Button";
-                    button.Location = new Point(x * buttonWidth, y * buttonHeight);
-                    button.Size = new Size(buttonWidth + 1, buttonHeight + 1);
-                    button.Padding = new Padding(0);
-                    button.BackColor = Color.White;
+                    Button button = new Button()
+                    {
+                        Text = "Button",
+                        Location = new Point(x * buttonWidth - 2, y * buttonHeight),
+                        Size = new Size(buttonWidth, buttonHeight),
+                        Padding = new Padding(0),
+                        BackColor = Color.White,
+                        FlatStyle = FlatStyle.Popup
+                    };
+
                     unasignedtiles.Add(button);
                     button.Click += Button_Click;
                     Controls.Add(button);
@@ -151,14 +156,12 @@ namespace Robo_s_Memory_Game
         {
             Button button = (Button)sender;
 
-            button.BackColor = Color.FromName(button.Text);
-
-            button.Tag = "flipped";
-
             List<Button> flippedTiles = new List<Button>();
 
+            FlipAnimation(button);
+
             //Adds every Button with a tag "flipped" to a list of flipped tiles
-            foreach(Button tile in assignedTiles)
+            foreach (Button tile in assignedTiles)
             {
                 if(tile.Tag == "flipped")
                 {
@@ -166,7 +169,7 @@ namespace Robo_s_Memory_Game
                 }
             }
 
-            if(flippedTiles.Count > 1)
+            if (flippedTiles.Count > 1)
             {
                 //Compares if the buttons are the same color
                 //If they are deletes them
@@ -187,6 +190,13 @@ namespace Robo_s_Memory_Game
                     }
                 }
             }
+        }
+
+        public void FlipAnimation(Button button)
+        {
+            button.Tag = "flipped";
+
+            button.BackColor = Color.FromName(button.Text);
         }
     }
 }

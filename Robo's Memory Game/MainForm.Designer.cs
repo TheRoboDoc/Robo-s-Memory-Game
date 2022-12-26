@@ -28,40 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.BackGroundImage = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // BackGroundImage
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(854, 480);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
+            this.BackGroundImage.BackColor = System.Drawing.Color.Transparent;
+            this.BackGroundImage.Image = global::Robo_s_Memory_Game.Properties.Resources.BackgroundImage1;
+            this.BackGroundImage.Location = new System.Drawing.Point(0, 0);
+            this.BackGroundImage.Name = "BackGroundImage";
+            this.BackGroundImage.Size = new System.Drawing.Size(854, 480);
+            this.BackGroundImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.BackGroundImage.TabIndex = 0;
+            this.BackGroundImage.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 484);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.BackGroundImage);
             this.MaximumSize = new System.Drawing.Size(1200, 523);
             this.MinimumSize = new System.Drawing.Size(1200, 523);
             this.Name = "MainForm";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox BackGroundImage;
     }
 }
 

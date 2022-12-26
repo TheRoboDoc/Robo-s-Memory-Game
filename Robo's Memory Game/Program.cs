@@ -16,7 +16,7 @@ namespace Robo_s_Memory_Game
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new MainMenu());
         }
     }
 }
