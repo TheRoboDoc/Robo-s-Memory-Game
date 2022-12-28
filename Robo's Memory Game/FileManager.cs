@@ -9,8 +9,14 @@ using System.Text.Json.Serialization;
 
 namespace Robo_s_Memory_Game
 {
+    /// <summary>
+    /// Manages the saving and loading of player and match data
+    /// </summary>
     static class FileManager
     {
+        /// <summary>
+        /// Player data construct
+        /// </summary>
         public struct Player
         {
             public string name { get; set; }
@@ -24,6 +30,9 @@ namespace Robo_s_Memory_Game
             public float winToLoseRatio { get; set; }
         }
 
+        /// <summary>
+        /// Match data construct
+        /// </summary>
         public struct Match
         {
             public DateTime mathDate { get; set; }
@@ -35,6 +44,10 @@ namespace Robo_s_Memory_Game
             public Player winner { get; set; }
         }
 
+        /// <summary>
+        /// Checks that all required files exist.
+        /// If they don't creates them
+        /// </summary>
         public static void FileCheck()
         {
             string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
@@ -97,6 +110,10 @@ namespace Robo_s_Memory_Game
             }
         }
 
+        /// <summary>
+        /// Saves player data
+        /// </summary>
+        /// <param name="player">Player to save</param>
         public static void SavePlayerData(Player player)
         {
             string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
@@ -131,6 +148,10 @@ namespace Robo_s_Memory_Game
             }
         }
 
+        /// <summary>
+        /// Loads player data
+        /// </summary>
+        /// <returns>Player loaded</returns>
         public static List<Player> LoadPlayerData()
         {
             string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
@@ -153,6 +174,54 @@ namespace Robo_s_Memory_Game
             }
 
             return players;
+        }
+
+        /// <summary>
+        /// Finds a player with a given name
+        /// </summary>
+        /// <param name="playerName">Name of a player to find</param>
+        /// <returns>
+        /// Player with the given name, if non can be found returns an empty player.
+        /// </returns>
+        public static Player FindPlayerWithName(string playerName)
+        {
+            Player playerFound = new Player();
+
+            List<Player> players = LoadPlayerData();
+
+            foreach (Player player in players)
+            {
+                if (player.name == playerName)
+                {
+                    playerFound = player;
+                    break;
+                }
+            }
+
+            return playerFound;
+        }
+
+        /// <summary>
+        /// Deletes a player with a given name
+        /// </summary>
+        /// <param name="playerName">Name of the player to delete</param>
+        public static void DeletePlayerWithName(string playerName)
+        {
+            List<Player> players = LoadPlayerData();
+
+            foreach(Player player in players)
+            {
+                if (player.name == playerName)
+                {
+                    players.Remove(player);
+                    break;
+                }
+            }
+
+            foreach(Player player in players)
+            {
+                SavePlayerData(player);
+            }
         }
     }
 }

@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace Robo_s_Memory_Game
 {
+    /// <summary>
+    /// Main play form
+    /// </summary>
     public partial class MainForm : Form
     {
         const int GRIDDEBUGSIZE = 48; //For debug, need to replace this with user input later
@@ -152,6 +155,9 @@ namespace Robo_s_Memory_Game
             } while (unasignedtiles.Count > 0 && colors.Count > 0);
         }
 
+        /// <summary>
+        /// When tile is clicked
+        /// </summary>
         private void Button_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
@@ -192,6 +198,10 @@ namespace Robo_s_Memory_Game
             }
         }
 
+        /// <summary>
+        /// Tile to play the animation on
+        /// </summary>
+        /// <param name="button">Tile to animate</param>
         public void FlipAnimation(Button button)
         {
             button.Tag = "flipped";

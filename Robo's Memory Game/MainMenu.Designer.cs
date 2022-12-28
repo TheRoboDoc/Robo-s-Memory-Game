@@ -33,17 +33,18 @@
             this.Exit = new System.Windows.Forms.Button();
             this.EntryPointControls = new System.Windows.Forms.Panel();
             this.ModeSelection = new System.Windows.Forms.Panel();
-            this.Single = new System.Windows.Forms.Button();
             this.Versus = new System.Windows.Forms.Button();
+            this.Single = new System.Windows.Forms.Button();
             this.PlayerSelectionSinglePlayer = new System.Windows.Forms.Panel();
-            this.Confirm = new System.Windows.Forms.Button();
-            this.PlayerSelect = new System.Windows.Forms.ComboBox();
-            this.PlayerNameSelectionText = new System.Windows.Forms.Label();
-            this.PlayerInfo = new System.Windows.Forms.ListBox();
-            this.NewNameLable = new System.Windows.Forms.Label();
+            this.Delete = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
             this.NameEntryTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.NewNameLable = new System.Windows.Forms.Label();
+            this.PlayerInfo = new System.Windows.Forms.ListBox();
+            this.PlayerNameSelectionText = new System.Windows.Forms.Label();
+            this.PlayerSelect = new System.Windows.Forms.ComboBox();
+            this.Confirm = new System.Windows.Forms.Button();
+            this.NameWarningText = new System.Windows.Forms.Label();
             this.EntryPointControls.SuspendLayout();
             this.ModeSelection.SuspendLayout();
             this.PlayerSelectionSinglePlayer.SuspendLayout();
@@ -102,18 +103,6 @@
             this.ModeSelection.TabIndex = 3;
             this.ModeSelection.Visible = false;
             // 
-            // Single
-            // 
-            this.Single.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Single.Location = new System.Drawing.Point(11, 2);
-            this.Single.Name = "Single";
-            this.Single.Size = new System.Drawing.Size(200, 50);
-            this.Single.TabIndex = 1;
-            this.Single.TabStop = false;
-            this.Single.Text = "Single";
-            this.Single.UseVisualStyleBackColor = true;
-            this.Single.Click += new System.EventHandler(this.Single_Click);
-            // 
             // Versus
             // 
             this.Versus.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -126,10 +115,23 @@
             this.Versus.UseVisualStyleBackColor = true;
             this.Versus.Click += new System.EventHandler(this.Versus_Click);
             // 
+            // Single
+            // 
+            this.Single.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Single.Location = new System.Drawing.Point(11, 2);
+            this.Single.Name = "Single";
+            this.Single.Size = new System.Drawing.Size(200, 50);
+            this.Single.TabIndex = 1;
+            this.Single.TabStop = false;
+            this.Single.Text = "Single";
+            this.Single.UseVisualStyleBackColor = true;
+            this.Single.Click += new System.EventHandler(this.Single_Click);
+            // 
             // PlayerSelectionSinglePlayer
             // 
-            this.PlayerSelectionSinglePlayer.Controls.Add(this.button2);
-            this.PlayerSelectionSinglePlayer.Controls.Add(this.button1);
+            this.PlayerSelectionSinglePlayer.Controls.Add(this.NameWarningText);
+            this.PlayerSelectionSinglePlayer.Controls.Add(this.Delete);
+            this.PlayerSelectionSinglePlayer.Controls.Add(this.Save);
             this.PlayerSelectionSinglePlayer.Controls.Add(this.NameEntryTextBox);
             this.PlayerSelectionSinglePlayer.Controls.Add(this.NewNameLable);
             this.PlayerSelectionSinglePlayer.Controls.Add(this.PlayerInfo);
@@ -143,6 +145,82 @@
             this.PlayerSelectionSinglePlayer.Visible = false;
             this.PlayerSelectionSinglePlayer.VisibleChanged += new System.EventHandler(this.PlayerSelectionSinglePlayer_VisibleChanged);
             // 
+            // Delete
+            // 
+            this.Delete.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Delete.Location = new System.Drawing.Point(557, 113);
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(200, 50);
+            this.Delete.TabIndex = 9;
+            this.Delete.TabStop = false;
+            this.Delete.Text = "Delete";
+            this.Delete.UseVisualStyleBackColor = true;
+            this.Delete.Click += new System.EventHandler(this.Delete_Click);
+            // 
+            // Save
+            // 
+            this.Save.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Save.Location = new System.Drawing.Point(557, 57);
+            this.Save.Name = "Save";
+            this.Save.Size = new System.Drawing.Size(200, 50);
+            this.Save.TabIndex = 8;
+            this.Save.TabStop = false;
+            this.Save.Text = "Save";
+            this.Save.UseVisualStyleBackColor = true;
+            this.Save.Click += new System.EventHandler(this.Save_Click);
+            // 
+            // NameEntryTextBox
+            // 
+            this.NameEntryTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameEntryTextBox.Location = new System.Drawing.Point(187, 30);
+            this.NameEntryTextBox.Name = "NameEntryTextBox";
+            this.NameEntryTextBox.Size = new System.Drawing.Size(364, 21);
+            this.NameEntryTextBox.TabIndex = 7;
+            // 
+            // NewNameLable
+            // 
+            this.NewNameLable.AutoSize = true;
+            this.NewNameLable.Location = new System.Drawing.Point(184, 14);
+            this.NewNameLable.Name = "NewNameLable";
+            this.NewNameLable.Size = new System.Drawing.Size(35, 13);
+            this.NewNameLable.TabIndex = 6;
+            this.NewNameLable.Text = "Name";
+            // 
+            // PlayerInfo
+            // 
+            this.PlayerInfo.FormattingEnabled = true;
+            this.PlayerInfo.Items.AddRange(new object[] {
+            "Name:\t\t",
+            "Playtime:\t",
+            "W/L:\t\t",
+            "High Score:\t",
+            "",
+            "",
+            "Match History:"});
+            this.PlayerInfo.Location = new System.Drawing.Point(3, 57);
+            this.PlayerInfo.Name = "PlayerInfo";
+            this.PlayerInfo.Size = new System.Drawing.Size(548, 238);
+            this.PlayerInfo.TabIndex = 5;
+            // 
+            // PlayerNameSelectionText
+            // 
+            this.PlayerNameSelectionText.AutoSize = true;
+            this.PlayerNameSelectionText.Location = new System.Drawing.Point(0, 14);
+            this.PlayerNameSelectionText.Name = "PlayerNameSelectionText";
+            this.PlayerNameSelectionText.Size = new System.Drawing.Size(39, 13);
+            this.PlayerNameSelectionText.TabIndex = 4;
+            this.PlayerNameSelectionText.Text = "Player:";
+            // 
+            // PlayerSelect
+            // 
+            this.PlayerSelect.FormattingEnabled = true;
+            this.PlayerSelect.Location = new System.Drawing.Point(3, 30);
+            this.PlayerSelect.Name = "PlayerSelect";
+            this.PlayerSelect.Size = new System.Drawing.Size(171, 21);
+            this.PlayerSelect.TabIndex = 3;
+            this.PlayerSelect.Text = "New Player";
+            this.PlayerSelect.SelectedIndexChanged += new System.EventHandler(this.PlayerSelect_SelectedIndexChanged);
+            // 
             // Confirm
             // 
             this.Confirm.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -155,79 +233,16 @@
             this.Confirm.UseVisualStyleBackColor = true;
             this.Confirm.Click += new System.EventHandler(this.Confirm_Click);
             // 
-            // PlayerSelect
+            // NameWarningText
             // 
-            this.PlayerSelect.FormattingEnabled = true;
-            this.PlayerSelect.Location = new System.Drawing.Point(3, 30);
-            this.PlayerSelect.Name = "PlayerSelect";
-            this.PlayerSelect.Size = new System.Drawing.Size(171, 21);
-            this.PlayerSelect.TabIndex = 3;
-            this.PlayerSelect.Text = "New Player";
-            this.PlayerSelect.SelectedIndexChanged += new System.EventHandler(this.PlayerSelect_SelectedIndexChanged);
-            // 
-            // PlayerNameSelectionText
-            // 
-            this.PlayerNameSelectionText.AutoSize = true;
-            this.PlayerNameSelectionText.Location = new System.Drawing.Point(0, 14);
-            this.PlayerNameSelectionText.Name = "PlayerNameSelectionText";
-            this.PlayerNameSelectionText.Size = new System.Drawing.Size(39, 13);
-            this.PlayerNameSelectionText.TabIndex = 4;
-            this.PlayerNameSelectionText.Text = "Player:";
-            // 
-            // PlayerInfo
-            // 
-            this.PlayerInfo.FormattingEnabled = true;
-            this.PlayerInfo.Items.AddRange(new object[] {
-            "Name:\t\t",
-            "Playertime:\t",
-            "W/L:\t\t",
-            "High Score:\t",
-            "",
-            "",
-            "Match History:"});
-            this.PlayerInfo.Location = new System.Drawing.Point(3, 57);
-            this.PlayerInfo.Name = "PlayerInfo";
-            this.PlayerInfo.Size = new System.Drawing.Size(548, 238);
-            this.PlayerInfo.TabIndex = 5;
-            // 
-            // NewNameLable
-            // 
-            this.NewNameLable.AutoSize = true;
-            this.NewNameLable.Location = new System.Drawing.Point(184, 14);
-            this.NewNameLable.Name = "NewNameLable";
-            this.NewNameLable.Size = new System.Drawing.Size(35, 13);
-            this.NewNameLable.TabIndex = 6;
-            this.NewNameLable.Text = "Name";
-            // 
-            // NameEntryTextBox
-            // 
-            this.NameEntryTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NameEntryTextBox.Location = new System.Drawing.Point(187, 30);
-            this.NameEntryTextBox.Name = "NameEntryTextBox";
-            this.NameEntryTextBox.Size = new System.Drawing.Size(364, 21);
-            this.NameEntryTextBox.TabIndex = 7;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.Location = new System.Drawing.Point(557, 57);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 50);
-            this.button1.TabIndex = 8;
-            this.button1.TabStop = false;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button2.Location = new System.Drawing.Point(557, 113);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(200, 50);
-            this.button2.TabIndex = 9;
-            this.button2.TabStop = false;
-            this.button2.Text = "Delete";
-            this.button2.UseVisualStyleBackColor = true;
+            this.NameWarningText.AutoSize = true;
+            this.NameWarningText.ForeColor = System.Drawing.Color.Red;
+            this.NameWarningText.Location = new System.Drawing.Point(225, 14);
+            this.NameWarningText.Name = "NameWarningText";
+            this.NameWarningText.Size = new System.Drawing.Size(35, 13);
+            this.NameWarningText.TabIndex = 10;
+            this.NameWarningText.Text = "label1";
+            this.NameWarningText.Visible = false;
             // 
             // MainMenu
             // 
@@ -268,7 +283,8 @@
         private System.Windows.Forms.ListBox PlayerInfo;
         private System.Windows.Forms.TextBox NameEntryTextBox;
         private System.Windows.Forms.Label NewNameLable;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Delete;
+        private System.Windows.Forms.Button Save;
+        private System.Windows.Forms.Label NameWarningText;
     }
 }
