@@ -51,7 +51,9 @@ namespace Robo_s_Memory_Game
 
         private void Confirm_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = new MainForm();
+            FileManager.Player player = FileManager.FindPlayerWithName(PlayerSelect.SelectedItem.ToString());
+
+            MainForm mainForm = new MainForm(MainForm.GameMode.Single, player);
 
             mainForm.Owner = this;
 
@@ -59,7 +61,7 @@ namespace Robo_s_Memory_Game
         }
 
         /// <summary>
-        /// When new player is selected in player selection dropbox
+        /// When the single player player selection screen is opened
         /// </summary>
         private void PlayerSelectionSinglePlayer_VisibleChanged(object sender, EventArgs e)
         {
@@ -153,6 +155,9 @@ namespace Robo_s_Memory_Game
             PlayerSelect.SelectedItem = newPlayer.name;
         }
 
+        /// <summary>
+        /// Deletes the player entry currently selected
+        /// </summary>
         private void Delete_Click(object sender, EventArgs e)
         {
             FileManager.DeletePlayerWithName(PlayerSelect.SelectedItem.ToString());

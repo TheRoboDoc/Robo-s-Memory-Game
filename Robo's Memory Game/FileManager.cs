@@ -12,7 +12,7 @@ namespace Robo_s_Memory_Game
     /// <summary>
     /// Manages the saving and loading of player and match data
     /// </summary>
-    static class FileManager
+    public static class FileManager
     {
         /// <summary>
         /// Player data construct
@@ -44,16 +44,16 @@ namespace Robo_s_Memory_Game
             public Player winner { get; set; }
         }
 
+        private static string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data"; //Path of the "Data" directory
+        private static string playerDataPath = dataPath + @"\PlayerData.json"; //Path of the "PlayerData.json"
+        private static string matchDataPath = dataPath + @"\MatchData.json"; //Path of the "MatchData.json"
+
         /// <summary>
         /// Checks that all required files exist.
-        /// If they don't creates them
+        /// If they don't creates them.
         /// </summary>
         public static void FileCheck()
         {
-            string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
-            string playerDataPath = dataPath + @"\PlayerData.json";
-            string matchDataPath = dataPath + @"\MatchData.json";
-
             DirectoryInfo playerDataDirectory = new DirectoryInfo(dataPath);
 
             FileInfo playerDataFile = new FileInfo(playerDataPath);
@@ -74,21 +74,7 @@ namespace Robo_s_Memory_Game
                 matchDataFile.Create().Dispose();
             }
 
-            List<Player> players = new List<Player>();
-
-            string jsonString = File.ReadAllText(playerDataPath);
-
-            if (!string.IsNullOrEmpty(jsonString))
-            {
-                try
-                {
-                    players = JsonSerializer.Deserialize<List<Player>>(jsonString);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error deserializing players: {ex.Message}");
-                }
-            }
+            List<Player> players = ReadJsonToPlayerList(playerDataPath);
 
             Player newPlayer = new Player
             {
@@ -116,36 +102,79 @@ namespace Robo_s_Memory_Game
         /// <param name="player">Player to save</param>
         public static void SavePlayerData(Player player)
         {
-            string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
-            string playerDataPath = dataPath + @"\PlayerData.json";
+            List<Player> players = ReadJsonToPlayerList(playerDataPath);
 
-            List<Player> players = new List<Player>();
+            Player playerToRemove = new Player();
 
-            string jsonString = File.ReadAllText(playerDataPath);
-
-            if (!string.IsNullOrEmpty(jsonString))
+            foreach(Player checkPlayer in players)
             {
-                try
+                if(checkPlayer.name == player.name)
                 {
-                    players = JsonSerializer.Deserialize<List<Player>>(jsonString);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error deserializing players: {ex.Message}");
+                    playerToRemove = checkPlayer;
+                    break;
                 }
             }
+
+            players.Remove(playerToRemove);
 
             players.Add(player);
 
-            using (FileStream fileStream = File.Open(playerDataPath, FileMode.Open, FileAccess.Write))
-            {
-                JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
-                {
-                    WriteIndented = true
-                };
+            WritePlayerListToJson(players, playerDataPath);
+        }
 
-                JsonSerializer.Serialize(fileStream, players, jsonSerializerOptions);
+        /// <summary>
+        /// Delets player data
+        /// </summary>
+        /// <param name="player">Player to delete</param>
+        public static void DeletePlayerData(Player player)
+        {
+            List<Player> players = ReadJsonToPlayerList(playerDataPath);
+
+            players.Remove(player);
+
+            WritePlayerListToJson(players, playerDataPath);
+        }
+
+        /// <summary>
+        /// Reads a JSON file
+        /// </summary>
+        /// <param name="jsonPath">Path of the JSON file to read</param>
+        /// <returns>A <c>List</c> of players</returns>
+        public static List<Player> ReadJsonToPlayerList(string jsonPath)
+        {
+            string jsonString = File.ReadAllText(jsonPath);
+
+            List<Player> players = new List<Player>();
+
+            if (!string.IsNullOrEmpty(jsonString))
+            {
+                players = JsonSerializer.Deserialize<List<Player>>(jsonString);
             }
+
+            return players;
+        }
+
+        /// <summary>
+        /// Overwrites a given player <c>List</c> to a give JSON file path
+        /// </summary>
+        /// <param name="players"><c>List</c> of players to write</param>
+        /// <param name="jsonPath">Path to JSON file</param>
+        public static void WritePlayerListToJson(List<Player> players, string jsonPath)
+        {
+            FileInfo jsonFile = new FileInfo(jsonPath);
+
+            jsonFile.Delete();
+
+            FileStream fileStream = File.Open(jsonPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+
+            JsonSerializer.Serialize(fileStream, players, jsonSerializerOptions);
+
+            fileStream.Close();
         }
 
         /// <summary>
@@ -154,23 +183,13 @@ namespace Robo_s_Memory_Game
         /// <returns>Player loaded</returns>
         public static List<Player> LoadPlayerData()
         {
-            string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data";
-            string playerDataPath = dataPath + @"\PlayerData.json";
-
             List<Player> players = new List<Player>();
 
             string jsonString = File.ReadAllText(playerDataPath);
 
             if (!string.IsNullOrEmpty(jsonString))
             {
-                try
-                {
-                    players = JsonSerializer.Deserialize<List<Player>>(jsonString);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error deserializing players: {ex.Message}");
-                }
+                players = JsonSerializer.Deserialize<List<Player>>(jsonString);
             }
 
             return players;
@@ -208,20 +227,18 @@ namespace Robo_s_Memory_Game
         public static void DeletePlayerWithName(string playerName)
         {
             List<Player> players = LoadPlayerData();
+            Player foundPlayer = new Player();
 
             foreach(Player player in players)
             {
                 if (player.name == playerName)
                 {
-                    players.Remove(player);
+                    foundPlayer = player;
                     break;
                 }
             }
 
-            foreach(Player player in players)
-            {
-                SavePlayerData(player);
-            }
+            DeletePlayerData(foundPlayer);
         }
     }
 }

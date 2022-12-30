@@ -16,18 +16,61 @@ namespace Robo_s_Memory_Game
     /// </summary>
     public partial class MainForm : Form
     {
-        const int GRIDDEBUGSIZE = 48; //For debug, need to replace this with user input later
+        private const int GRIDDEBUGSIZE = 4; //For debug, need to replace this with user input later
 
-        public MainForm()
+        private GameMode gameMode;
+
+        private FileManager.Player playerOne;
+        private FileManager.Player playerTwo;
+
+        /// <summary>
+        /// Main play form
+        /// </summary>
+        /// <param name="gameMode">The game mode that is to be played</param>
+        /// <param name="playerOne">The first player</param>
+        /// <param name="playerTwo">The second player (optional)</param>
+        public MainForm(GameMode gameMode, FileManager.Player playerOne, FileManager.Player playerTwo = new FileManager.Player()) 
         {
             InitializeComponent();
             GenerateGrid();
+
+            this.gameMode = gameMode;
+            this.playerOne = playerOne;
+            this.playerTwo = playerTwo;
+
+            switch(this.gameMode)
+            {
+                case GameMode.Single:
+                    SinglePlayerInfoPanel.Visible = true;
+                    break;
+                case GameMode.Versus:
+                    //VersusPlayerInfoPanel.Visible = true;
+                    break;
+                default:
+                    throw new Exception("Failed to set a game mode");
+            }
+        }
+
+        /// <summary>
+        /// Available game modes
+        /// </summary>
+        public enum GameMode
+        {
+            /// <summary>
+            /// Singleplayer game mode
+            /// </summary>
+            Single,
+
+            /// <summary>
+            /// Versus mode where two players play against each other
+            /// </summary>
+            Versus
         }
 
         /// <summary>
         /// List of all the colors used in the game
         /// </summary>
-        List<Color> knownColors = new List<Color>()
+        private List<Color> knownColors = new List<Color>()
         {
             Color.Aqua,
             Color.Blue,
@@ -99,6 +142,7 @@ namespace Robo_s_Memory_Game
 
                     unasignedtiles.Add(button);
                     button.Click += Button_Click;
+                    button.Disposed += Button_Disposed;
                     Controls.Add(button);
                     button.BringToFront();
                 }
@@ -111,6 +155,33 @@ namespace Robo_s_Memory_Game
         /// List of all assigned "tiles"
         /// </summary>
         List<Button> assignedTiles = new List<Button>();
+
+        private void Button_Disposed(object sender, EventArgs e)
+        {
+            if (assignedTiles.Count > 0) return;
+
+            float fScore = float.Parse(CurrentScore.Text);
+
+            int score = (int)Math.Round(fScore);
+
+            CurrentScore.Text = score.ToString();
+
+            FileManager.Player[] players = {playerOne, playerTwo};
+
+            FileManager.Match currentMatch = new FileManager.Match()
+            {
+                matchType = "Single",
+                mathDate = DateTime.Now,
+                players = players,
+                winner = playerOne
+            };
+
+            VictoryScreen victoryScreen = new VictoryScreen(playerOne, score, currentMatch);
+
+            victoryScreen.Owner = this;
+
+            victoryScreen.ShowDialog();
+        }
 
         /// <summary>
         /// Assignes the colors to randombly paired tiles
@@ -183,7 +254,9 @@ namespace Robo_s_Memory_Game
                 {
                     foreach(Button tile in flippedTiles)
                     {
+                        assignedTiles.Remove(tile);
                         tile.Dispose();
+                        GiveScoreToPlayer(playerOne);
                     }
                 }
                 //If they are not returns them to default state
@@ -207,6 +280,21 @@ namespace Robo_s_Memory_Game
             button.Tag = "flipped";
 
             button.BackColor = Color.FromName(button.Text);
+        }
+
+        private void GiveScoreToPlayer(FileManager.Player player)
+        {
+            float currentScore = float.Parse(CurrentScore.Text);
+
+            currentScore += 0.5F;
+
+            CurrentScore.Text = currentScore.ToString();
+        }
+
+        private void SinglePlayerInfoPanel_VisibleChanged(object sender, EventArgs e)
+        {
+            PlayerNameLable.Text = playerOne.name;
+            BestScore.Text = playerOne.highScore.ToString();
         }
     }
 }
