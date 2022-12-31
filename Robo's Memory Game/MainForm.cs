@@ -16,27 +16,38 @@ namespace Robo_s_Memory_Game
     /// </summary>
     public partial class MainForm : Form
     {
-        private const int GRIDDEBUGSIZE = 4; //For debug, need to replace this with user input later
+        //private const int GRIDDEBUGSIZE = 4; //For debug, need to replace this with user input later
+
+        private int gridSize;
 
         private GameMode gameMode;
 
         private FileManager.Player playerOne;
         private FileManager.Player playerTwo;
 
+        private Image backgroundImage;
+
         /// <summary>
         /// Main play form
         /// </summary>
-        /// <param name="gameMode">The game mode that is to be played</param>
+        /// <param name="gameMode">Game mode to be played</param>
         /// <param name="playerOne">The first player</param>
-        /// <param name="playerTwo">The second player (optional)</param>
-        public MainForm(GameMode gameMode, FileManager.Player playerOne, FileManager.Player playerTwo = new FileManager.Player()) 
+        /// <param name="backgroundImage">The background image to be used</param>
+        /// <param name="playerTwo">The second player</param>
+        public MainForm(GameMode gameMode, FileManager.Player playerOne, Image backgroundImage,
+            int gridSize,FileManager.Player playerTwo = new FileManager.Player()) 
         {
             InitializeComponent();
-            GenerateGrid();
-
+            
             this.gameMode = gameMode;
             this.playerOne = playerOne;
             this.playerTwo = playerTwo;
+            this.backgroundImage = backgroundImage;
+            this.gridSize = gridSize;
+
+            GenerateGrid();
+
+            BackGroundImage.Image = backgroundImage;
 
             switch(this.gameMode)
             {
@@ -49,6 +60,9 @@ namespace Robo_s_Memory_Game
                 default:
                     throw new Exception("Failed to set a game mode");
             }
+
+            PlayTimer.Enabled = true;
+            PlayTimer.Start();
         }
 
         /// <summary>
@@ -116,12 +130,12 @@ namespace Robo_s_Memory_Game
         private void GenerateGrid()
         {
             // Calculate the number of rows and columns needed to fill the desired area
-            int numRows = (int)Math.Sqrt(GRIDDEBUGSIZE);
-            int numColumns = (int)Math.Ceiling((double)GRIDDEBUGSIZE / numRows);
+            int numRows = (int)Math.Sqrt(gridSize);
+            int numColumns = (int)Math.Ceiling((double)gridSize / numRows);
 
             // Calculate the size of each button based on the number of rows and columns, and size of the grid area
-            int buttonWidth = (BackGroundImage.Width + 2) / numColumns;
-            int buttonHeight = BackGroundImage.Height / numRows;
+            int buttonWidth = (BackGroundImage.Width + 4) / numColumns;
+            int buttonHeight = (BackGroundImage.Height) / numRows;
 
             unasignedtiles = new List<Button>();
 
@@ -160,23 +174,37 @@ namespace Robo_s_Memory_Game
         {
             if (assignedTiles.Count > 0) return;
 
+            PlayTimer.Stop();
+
             float fScore = float.Parse(CurrentScore.Text);
 
             int score = (int)Math.Round(fScore);
 
             CurrentScore.Text = score.ToString();
 
-            FileManager.Player[] players = {playerOne, playerTwo};
+            string[] playerNames = {playerOne.name, playerTwo.name};
+
+            string matchType = "";
+
+            if(gameMode == GameMode.Single)
+            {
+                matchType = "Single";
+            }
+            else if(gameMode == GameMode.Versus)
+            {
+                matchType = "Versus";
+            }
 
             FileManager.Match currentMatch = new FileManager.Match()
             {
-                matchType = "Single",
+                matchType = matchType,
                 mathDate = DateTime.Now,
-                players = players,
-                winner = playerOne
+                playerNames = playerNames,
+                winnersName = playerOne.name,
+                gridSize = gridSize
             };
 
-            VictoryScreen victoryScreen = new VictoryScreen(playerOne, score, currentMatch);
+            VictoryScreen victoryScreen = new VictoryScreen(playerOne, score, currentMatch, timeSpan);
 
             victoryScreen.Owner = this;
 
@@ -190,7 +218,7 @@ namespace Robo_s_Memory_Game
         {
             colors = new List<Color>();
 
-            int colorAmount = GRIDDEBUGSIZE / 2;
+            int colorAmount = gridSize / 2;
 
             Random rand = new Random();
 
@@ -282,6 +310,10 @@ namespace Robo_s_Memory_Game
             button.BackColor = Color.FromName(button.Text);
         }
 
+        /// <summary>
+        /// Gives the given player half a score
+        /// </summary>
+        /// <param name="player"></param>
         private void GiveScoreToPlayer(FileManager.Player player)
         {
             float currentScore = float.Parse(CurrentScore.Text);
@@ -295,6 +327,27 @@ namespace Robo_s_Memory_Game
         {
             PlayerNameLable.Text = playerOne.name;
             BestScore.Text = playerOne.highScore.ToString();
+        }
+
+        private void ExitPlay_Click(object sender, EventArgs e)
+        {
+            Close();
+
+            Owner.Visible = true;
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Owner.Visible = true;
+        }
+
+        TimeSpan timeSpan = TimeSpan.FromSeconds(0);
+
+        private void PlayTimer_Tick(object sender, EventArgs e)
+        {
+            timeSpan += TimeSpan.FromSeconds(1);
+
+            PlayTimeDisplay.Text = timeSpan.ToString();
         }
     }
 }

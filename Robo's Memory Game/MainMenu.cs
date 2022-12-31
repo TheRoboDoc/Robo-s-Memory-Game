@@ -31,6 +31,7 @@ namespace Robo_s_Memory_Game
         {
             EntryPointControls.Visible = false;
             ModeSelection.Visible = true;
+            ReturnToMain.Visible = true;
         }
 
         private void Single_Click(object sender, EventArgs e)
@@ -49,15 +50,25 @@ namespace Robo_s_Memory_Game
             FileManager.FileCheck();
         }
 
+        FileManager.Player player;
+
         private void Confirm_Click(object sender, EventArgs e)
         {
-            FileManager.Player player = FileManager.FindPlayerWithName(PlayerSelect.SelectedItem.ToString());
+            if(PlayerSelect.Text == "New Player")
+            {
+                ConfirmWarning.Text = "*Please create a player or \n select other player than \"New Player\"";
+                ConfirmWarning.Visible = true;
+                return;
+            }
+            else
+            {
+                ConfirmWarning.Visible = false;
+            }
 
-            MainForm mainForm = new MainForm(MainForm.GameMode.Single, player);
+            player = FileManager.FindPlayerWithName(PlayerSelect.SelectedItem.ToString());
 
-            mainForm.Owner = this;
-
-            mainForm.ShowDialog();
+            PlayerSelectionSinglePlayer.Visible = false;
+            ImageSelectionPanel.Visible = true;
         }
 
         /// <summary>
@@ -69,6 +80,8 @@ namespace Robo_s_Memory_Game
 
             FileManager.Player newPlayer = new FileManager.Player();
 
+            PlayerSelect.Items.Clear();
+
             foreach (FileManager.Player player in playerList)
             {
                 PlayerSelect.Items.Add(player.name);
@@ -76,7 +89,7 @@ namespace Robo_s_Memory_Game
 
             foreach (FileManager.Player player in playerList)
             {
-                if(player.name == "New Player")
+                if (player.name == "New Player")
                 {
                     newPlayer = player;
                     break;
@@ -91,7 +104,6 @@ namespace Robo_s_Memory_Game
         int playerTimePos = 1;
         int winToLoseRatioPos = 2;
         int highScorePos = 3;
-        int matchHistoryPos = 6;
 
         /// <summary>
         /// Loads player data to the player info display
@@ -102,10 +114,26 @@ namespace Robo_s_Memory_Game
             ResetPlayerInfo();
 
             PlayerInfo.Items[namePos] += player.name;
-            PlayerInfo.Items[playerTimePos] += player.playTime.TotalHours.ToString();
+            PlayerInfo.Items[playerTimePos] += player.playTime.ToString();
             PlayerInfo.Items[winToLoseRatioPos] += player.winToLoseRatio.ToString();
             PlayerInfo.Items[highScorePos] += player.highScore.ToString();
-            PlayerInfo.Items[matchHistoryPos] += $"\n{player.matchHistory}";
+
+            if (player.matchHistory == null) return;
+
+
+            foreach (FileManager.Match match in player.matchHistory)
+            {
+                PlayerInfo.Items.Add("----------------------------------------------------");
+                PlayerInfo.Items.Add($"Match Date:\t{match.mathDate.ToShortDateString()}");
+                PlayerInfo.Items.Add($"Match Type:\t{match.matchType}");
+                PlayerInfo.Items.Add($"Grid Size:\t\t{match.gridSize}");
+
+                if (match.matchType == "Versus")
+                {
+                    PlayerInfo.Items.Add($"Players:\t\t{match.playerNames[0]} vs {match.playerNames[1]}");
+                    PlayerInfo.Items.Add($"Winnder:\t\t{match.winnersName}");
+                }
+            }
         }
 
         /// <summary>
@@ -113,13 +141,13 @@ namespace Robo_s_Memory_Game
         /// </summary>
         private void ResetPlayerInfo()
         {
-            PlayerInfo.ResetText();
+            PlayerInfo.Items.Clear();
 
-            PlayerInfo.Items[namePos] = "Name:\t\t";
-            PlayerInfo.Items[playerTimePos] = "Playtime:\t\t";
-            PlayerInfo.Items[winToLoseRatioPos] = "W/L:\t\t";
-            PlayerInfo.Items[highScorePos] = "High Score:\t";
-            PlayerInfo.Items[matchHistoryPos] = "Match History:";
+            PlayerInfo.Items.Add("Name:\t\t");
+            PlayerInfo.Items.Add("Playtime:\t\t");
+            PlayerInfo.Items.Add("W/L:\t\t");
+            PlayerInfo.Items.Add("High Score:\t");
+            PlayerInfo.Items.Add("Match History:");
         }
 
         private void PlayerSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -138,11 +166,15 @@ namespace Robo_s_Memory_Game
         {
             string newPlayerName = NameEntryTextBox.Text;
 
-            if(string.IsNullOrEmpty(newPlayerName))
+            if (string.IsNullOrEmpty(newPlayerName))
             {
                 NameWarningText.Visible = true;
                 NameWarningText.Text = "*Name cannot be empty";
                 return;
+            }
+            else
+            {
+                NameWarningText.Visible = false;
             }
 
             FileManager.Player newPlayer = new FileManager.Player();
@@ -160,11 +192,122 @@ namespace Robo_s_Memory_Game
         /// </summary>
         private void Delete_Click(object sender, EventArgs e)
         {
+            if(PlayerSelect.Text == "New Player")
+            {
+                DeleteWarning.Visible = true;
+                DeleteWarning.Text = "*Cannot delete \n default \"New Player\" entry";
+                return;
+            }
+            else
+            {
+                DeleteWarning.Visible = false;
+            }
+
             FileManager.DeletePlayerWithName(PlayerSelect.SelectedItem.ToString());
 
             PlayerSelect.Items.Remove(PlayerSelect.SelectedItem);
 
             PlayerSelect.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Resetting menus to starting position
+        /// </summary>
+        private void ReturnToMain_Click(object sender, EventArgs e)
+        {
+            PlayerSelectionSinglePlayer.Visible = false;
+            ModeSelection.Visible = false;
+            ReturnToMain.Visible = false;
+            ImageSelectionPanel.Visible = false;
+            EntryPointControls.Visible = true;
+        }
+
+        /// <summary>
+        /// Loading of a custom background image
+        /// </summary>
+        private void LoadCustomImage_Click(object sender, EventArgs e)
+        {
+            string filePath;
+
+            if(SelectCustomImageDialog.ShowDialog() == DialogResult.OK )
+            {
+                filePath = SelectCustomImageDialog.FileName;
+
+                try
+                {
+                    SelectedImageShow.Image = Image.FromFile(filePath);
+                    pictureBox16.Image = SelectedImageShow.Image;
+                    SelectedImageWarningLable.Visible = false;
+                }
+                catch
+                {
+                    SelectedImageWarningLable.Visible = true;
+                    SelectedImageWarningLable.Text = "*Failed to load the image";
+                }
+                
+            }
+        }
+
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
+            PictureBox selectedImage = (PictureBox)sender;
+
+            SelectedImageShow.Image = selectedImage.Image;
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            if(SelectedImageShow.Image == null)
+            {
+                SelectedImageWarningLable.Visible = true;
+                SelectedImageWarningLable.Text = "*Please select an image";
+
+                return;
+            }
+            else
+            {
+                SelectedImageWarningLable.Visible = false;
+            }
+
+            int gridSize;
+
+            if(!int.TryParse(GridSizeTextBox.Text, out gridSize))
+            {
+                GridSizeWarning.Visible = true;
+                GridSizeWarning.Text =
+                    "*Invalid size:\n" +
+                    " Size must be between 4 and 30";
+                return;
+            }
+            else if(gridSize < 4 || gridSize > 30)
+            {
+                GridSizeWarning.Visible = true;
+                GridSizeWarning.Text =
+                    "*Invalid size:\n" +
+                    " Size must be between 4 and 30";
+                return;
+            }
+            else if(gridSize % 2 != 0)
+            {
+                GridSizeWarning.Visible = true;
+                GridSizeWarning.Text =
+                    "*Invalid size:\n" +
+                    " Grid size must be divisible by 2";
+                return;
+            }
+            else
+            {
+                GridSizeWarning.Visible = false;
+            }
+
+
+            MainForm mainForm = new MainForm(MainForm.GameMode.Single, player, SelectedImageShow.Image, gridSize);
+
+            this.Visible = false;
+
+            mainForm.Owner = this;
+
+            mainForm.ShowDialog();
         }
     }
 }

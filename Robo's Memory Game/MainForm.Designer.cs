@@ -28,32 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.BackGroundImage = new System.Windows.Forms.PictureBox();
+            this.components = new System.ComponentModel.Container();
             this.SinglePlayerInfoPanel = new System.Windows.Forms.Panel();
+            this.PlayTimeDisplay = new System.Windows.Forms.Label();
+            this.ExitPlay = new System.Windows.Forms.Button();
             this.BestScore = new System.Windows.Forms.Label();
             this.BestScoreLable = new System.Windows.Forms.Label();
             this.PlayerNameLable = new System.Windows.Forms.Label();
             this.CurrentScore = new System.Windows.Forms.Label();
             this.ScoreLable = new System.Windows.Forms.Label();
-            this.Debug = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).BeginInit();
+            this.PlayTimer = new System.Windows.Forms.Timer(this.components);
+            this.BackGroundImage = new System.Windows.Forms.PictureBox();
             this.SinglePlayerInfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).BeginInit();
             this.SuspendLayout();
-            // 
-            // BackGroundImage
-            // 
-            this.BackGroundImage.BackColor = System.Drawing.Color.Transparent;
-            this.BackGroundImage.Image = global::Robo_s_Memory_Game.Properties.Resources.BackgroundImage1;
-            this.BackGroundImage.Location = new System.Drawing.Point(0, 0);
-            this.BackGroundImage.Name = "BackGroundImage";
-            this.BackGroundImage.Size = new System.Drawing.Size(854, 480);
-            this.BackGroundImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.BackGroundImage.TabIndex = 0;
-            this.BackGroundImage.TabStop = false;
             // 
             // SinglePlayerInfoPanel
             // 
-            this.SinglePlayerInfoPanel.Controls.Add(this.Debug);
+            this.SinglePlayerInfoPanel.Controls.Add(this.PlayTimeDisplay);
+            this.SinglePlayerInfoPanel.Controls.Add(this.ExitPlay);
             this.SinglePlayerInfoPanel.Controls.Add(this.BestScore);
             this.SinglePlayerInfoPanel.Controls.Add(this.BestScoreLable);
             this.SinglePlayerInfoPanel.Controls.Add(this.PlayerNameLable);
@@ -65,6 +58,26 @@
             this.SinglePlayerInfoPanel.TabIndex = 1;
             this.SinglePlayerInfoPanel.Visible = false;
             this.SinglePlayerInfoPanel.VisibleChanged += new System.EventHandler(this.SinglePlayerInfoPanel_VisibleChanged);
+            // 
+            // PlayTimeDisplay
+            // 
+            this.PlayTimeDisplay.AutoSize = true;
+            this.PlayTimeDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayTimeDisplay.Location = new System.Drawing.Point(238, 9);
+            this.PlayTimeDisplay.Name = "PlayTimeDisplay";
+            this.PlayTimeDisplay.Size = new System.Drawing.Size(71, 20);
+            this.PlayTimeDisplay.TabIndex = 6;
+            this.PlayTimeDisplay.Text = "00:00:00";
+            // 
+            // ExitPlay
+            // 
+            this.ExitPlay.Location = new System.Drawing.Point(159, 420);
+            this.ExitPlay.Name = "ExitPlay";
+            this.ExitPlay.Size = new System.Drawing.Size(150, 52);
+            this.ExitPlay.TabIndex = 5;
+            this.ExitPlay.Text = "Main Menu";
+            this.ExitPlay.UseVisualStyleBackColor = true;
+            this.ExitPlay.Click += new System.EventHandler(this.ExitPlay_Click);
             // 
             // BestScore
             // 
@@ -116,15 +129,21 @@
             this.ScoreLable.TabIndex = 0;
             this.ScoreLable.Text = "Current Score: ";
             // 
-            // Debug
+            // PlayTimer
             // 
-            this.Debug.Location = new System.Drawing.Point(28, 250);
-            this.Debug.Name = "Debug";
-            this.Debug.Size = new System.Drawing.Size(75, 23);
-            this.Debug.TabIndex = 2;
-            this.Debug.Text = "button1";
-            this.Debug.UseVisualStyleBackColor = true;
-            this.Debug.Visible = false;
+            this.PlayTimer.Interval = 1000;
+            this.PlayTimer.Tick += new System.EventHandler(this.PlayTimer_Tick);
+            // 
+            // BackGroundImage
+            // 
+            this.BackGroundImage.BackColor = System.Drawing.Color.Transparent;
+            this.BackGroundImage.Image = global::Robo_s_Memory_Game.Properties.Resources.BackgroundImage1;
+            this.BackGroundImage.Location = new System.Drawing.Point(0, 0);
+            this.BackGroundImage.Name = "BackGroundImage";
+            this.BackGroundImage.Size = new System.Drawing.Size(854, 480);
+            this.BackGroundImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.BackGroundImage.TabIndex = 0;
+            this.BackGroundImage.TabStop = false;
             // 
             // MainForm
             // 
@@ -136,10 +155,11 @@
             this.MaximumSize = new System.Drawing.Size(1200, 523);
             this.MinimumSize = new System.Drawing.Size(1200, 523);
             this.Name = "MainForm";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).EndInit();
+            this.Text = "Robo\'s Memory Gane | Play";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.SinglePlayerInfoPanel.ResumeLayout(false);
             this.SinglePlayerInfoPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BackGroundImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -152,7 +172,9 @@
         private System.Windows.Forms.Label ScoreLable;
         private System.Windows.Forms.Label BestScore;
         private System.Windows.Forms.Label BestScoreLable;
-        private System.Windows.Forms.Button Debug;
+        private System.Windows.Forms.Button ExitPlay;
+        private System.Windows.Forms.Timer PlayTimer;
+        private System.Windows.Forms.Label PlayTimeDisplay;
     }
 }
 

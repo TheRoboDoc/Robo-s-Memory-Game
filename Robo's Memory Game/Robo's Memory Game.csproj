@@ -131,5 +131,47 @@
   <ItemGroup>
     <None Include="Resources\GMY5SBfa_4x.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\742320.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\church-gdcd135857_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hd-wallpaper-g1ca2eaa20_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hd-wallpaper-g2f0690110_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hd-wallpaper-ga09276291_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nature-ge744e62ba_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-carlos-oliva-3586966.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-emiliano-arano-3608311.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-francesco-ungaro-2325446.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-kailash-kumar-693776.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-roberto-nickson-2885320.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pexels-suzy-hazelwood-1629236.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\planet-g1a5ebd4de_1920.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sunset-ge2ab301a5_1920.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -35,6 +35,8 @@
             this.ScoreLable = new System.Windows.Forms.Label();
             this.Score = new System.Windows.Forms.Label();
             this.BestScore = new System.Windows.Forms.Label();
+            this.WinnerLable = new System.Windows.Forms.Label();
+            this.WinnerName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // VictoryText
@@ -43,9 +45,9 @@
             this.VictoryText.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VictoryText.Location = new System.Drawing.Point(12, 9);
             this.VictoryText.Name = "VictoryText";
-            this.VictoryText.Size = new System.Drawing.Size(109, 26);
+            this.VictoryText.Size = new System.Drawing.Size(79, 26);
             this.VictoryText.TabIndex = 0;
-            this.VictoryText.Text = "You Won!";
+            this.VictoryText.Text = "Victory";
             // 
             // MainMenu
             // 
@@ -55,6 +57,7 @@
             this.MainMenu.TabIndex = 1;
             this.MainMenu.Text = "Main Menu";
             this.MainMenu.UseVisualStyleBackColor = true;
+            this.MainMenu.Click += new System.EventHandler(this.MainMenu_Click);
             // 
             // Exit
             // 
@@ -102,11 +105,33 @@
             this.BestScore.TabIndex = 6;
             this.BestScore.Text = "0";
             // 
+            // WinnerLable
+            // 
+            this.WinnerLable.AutoSize = true;
+            this.WinnerLable.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerLable.Location = new System.Drawing.Point(14, 79);
+            this.WinnerLable.Name = "WinnerLable";
+            this.WinnerLable.Size = new System.Drawing.Size(59, 18);
+            this.WinnerLable.TabIndex = 7;
+            this.WinnerLable.Text = "Winner:";
+            // 
+            // WinnerName
+            // 
+            this.WinnerName.AutoSize = true;
+            this.WinnerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerName.Location = new System.Drawing.Point(14, 97);
+            this.WinnerName.Name = "WinnerName";
+            this.WinnerName.Size = new System.Drawing.Size(17, 18);
+            this.WinnerName.TabIndex = 8;
+            this.WinnerName.Text = "0";
+            // 
             // VictoryScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 133);
+            this.Controls.Add(this.WinnerName);
+            this.Controls.Add(this.WinnerLable);
             this.Controls.Add(this.BestScore);
             this.Controls.Add(this.Score);
             this.Controls.Add(this.ScoreLable);
@@ -115,7 +140,8 @@
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.VictoryText);
             this.Name = "VictoryScreen";
-            this.Text = "VictoryScreen";
+            this.Text = "Robo\'s Memory Gane | VictoryScreen";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VictoryScreen_FormClosing);
             this.Load += new System.EventHandler(this.VictoryScreen_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -131,5 +157,7 @@
         private System.Windows.Forms.Label ScoreLable;
         private System.Windows.Forms.Label Score;
         private System.Windows.Forms.Label BestScore;
+        private System.Windows.Forms.Label WinnerLable;
+        private System.Windows.Forms.Label WinnerName;
     }
 }

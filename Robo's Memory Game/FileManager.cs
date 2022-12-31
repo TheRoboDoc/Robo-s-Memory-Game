@@ -39,9 +39,11 @@ namespace Robo_s_Memory_Game
 
             public string matchType { get; set; }
 
-            public Player[] players { get; set; }
+            public string[] playerNames { get; set; }
 
-            public Player winner { get; set; }
+            public string winnersName { get; set; }
+
+            public int gridSize { get; set; }
         }
 
         private static string dataPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data"; //Path of the "Data" directory
