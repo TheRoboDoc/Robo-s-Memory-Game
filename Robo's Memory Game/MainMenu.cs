@@ -42,7 +42,8 @@ namespace Robo_s_Memory_Game
 
         private void Versus_Click(object sender, EventArgs e)
         {
-
+            PlayerSelectionVersus.Visible = true;
+            ModeSelection.Visible = false;
         }
 
         private void MainMenu_Load(object sender, EventArgs e)
@@ -51,6 +52,9 @@ namespace Robo_s_Memory_Game
         }
 
         FileManager.Player player;
+        FileManager.Player playerTwo;
+
+        MainForm.GameMode gameMode = new MainForm.GameMode();
 
         private void Confirm_Click(object sender, EventArgs e)
         {
@@ -69,6 +73,36 @@ namespace Robo_s_Memory_Game
 
             PlayerSelectionSinglePlayer.Visible = false;
             ImageSelectionPanel.Visible = true;
+
+            gameMode = MainForm.GameMode.Single;
+        }
+
+        private void ConfirmVersus_Click(object sender, EventArgs e)
+        {
+            if(PlayerOneSelection.Text == "New Player" || PlayerTwoSelection.Text == "New Player")
+            {
+                ConfirmVersusWarning.Text = "*Please create a player or \n select other player than \"New Player\"";
+                ConfirmVersusWarning.Visible = true;
+                return;
+            }
+            else if (PlayerOneSelection.Text == PlayerTwoSelection.Text)
+            {
+                ConfirmVersusWarning.Text = "*Player one and player two\n cannot be the same player";
+                ConfirmVersusWarning.Visible = true;
+                return;
+            }
+            else
+            {
+                ConfirmVersusWarning.Visible = false;
+            }
+
+            player = FileManager.FindPlayerWithName(PlayerOneSelection.Text);
+            playerTwo = FileManager.FindPlayerWithName(PlayerTwoSelection.Text);
+
+            PlayerSelectionVersus.Visible = false;
+            ImageSelectionPanel.Visible = true;
+
+            gameMode = MainForm.GameMode.Versus;
         }
 
         /// <summary>
@@ -96,7 +130,35 @@ namespace Robo_s_Memory_Game
                 }
             }
 
-            LoadPlayerDataToPlayerInfo(newPlayer);
+            LoadPlayerDataToPlayerInfo(newPlayer, PlayerInfo);
+        }
+
+        private void PlayerSelectionVersus_VisibleChanged(object sender, EventArgs e)
+        {
+            List<FileManager.Player> playerList = FileManager.LoadPlayerData();
+
+            FileManager.Player newPlayer = new FileManager.Player();
+
+            PlayerOneSelection.Items.Clear();
+            PlayerTwoSelection.Items.Clear();
+
+            foreach(FileManager.Player player in playerList)
+            {
+                PlayerOneSelection.Items.Add(player.name);
+                PlayerTwoSelection.Items.Add(player.name);
+            }
+
+            foreach(FileManager.Player player in playerList)
+            {
+                if(player.name == "New Player")
+                {
+                    newPlayer = player;
+                    break;
+                }
+            }
+
+            LoadPlayerDataToPlayerInfo(newPlayer, PlayerOneInfoList);
+            LoadPlayerDataToPlayerInfo(newPlayer, PlayerTwoInfoList);
         }
 
         //Indexes of player info entries
@@ -109,29 +171,29 @@ namespace Robo_s_Memory_Game
         /// Loads player data to the player info display
         /// </summary>
         /// <param name="player"></param>
-        private void LoadPlayerDataToPlayerInfo(FileManager.Player player)
+        private void LoadPlayerDataToPlayerInfo(FileManager.Player player, ListBox listBox)
         {
-            ResetPlayerInfo();
+            ResetPlayerInfo(listBox);
 
-            PlayerInfo.Items[namePos] += player.name;
-            PlayerInfo.Items[playerTimePos] += player.playTime.ToString();
-            PlayerInfo.Items[winToLoseRatioPos] += player.winToLoseRatio.ToString();
-            PlayerInfo.Items[highScorePos] += player.highScore.ToString();
+            listBox.Items[namePos] += player.name;
+            listBox.Items[playerTimePos] += player.playTime.ToString();
+            listBox.Items[winToLoseRatioPos] += player.winToLoseRatio.ToString();
+            listBox.Items[highScorePos] += player.highScore.ToString();
 
             if (player.matchHistory == null) return;
 
 
             foreach (FileManager.Match match in player.matchHistory)
             {
-                PlayerInfo.Items.Add("----------------------------------------------------");
-                PlayerInfo.Items.Add($"Match Date:\t{match.mathDate.ToShortDateString()}");
-                PlayerInfo.Items.Add($"Match Type:\t{match.matchType}");
-                PlayerInfo.Items.Add($"Grid Size:\t\t{match.gridSize}");
+                listBox.Items.Add("----------------------------------------------------");
+                listBox.Items.Add($"Match Date:\t{match.mathDate.ToShortDateString()}");
+                listBox.Items.Add($"Match Type:\t{match.matchType}");
+                listBox.Items.Add($"Grid Size:\t\t{match.gridSize}");
 
                 if (match.matchType == "Versus")
                 {
-                    PlayerInfo.Items.Add($"Players:\t\t{match.playerNames[0]} vs {match.playerNames[1]}");
-                    PlayerInfo.Items.Add($"Winnder:\t\t{match.winnersName}");
+                    listBox.Items.Add($"Players:\t\t{match.playerNames[0]} vs {match.playerNames[1]}");
+                    listBox.Items.Add($"Winnder:\t\t{match.winnersName}");
                 }
             }
         }
@@ -139,24 +201,49 @@ namespace Robo_s_Memory_Game
         /// <summary>
         /// Resets the player info display to default values
         /// </summary>
-        private void ResetPlayerInfo()
+        private void ResetPlayerInfo(ListBox listBox)
         {
-            PlayerInfo.Items.Clear();
+            listBox.Items.Clear();
 
-            PlayerInfo.Items.Add("Name:\t\t");
-            PlayerInfo.Items.Add("Playtime:\t\t");
-            PlayerInfo.Items.Add("W/L:\t\t");
-            PlayerInfo.Items.Add("High Score:\t");
-            PlayerInfo.Items.Add("Match History:");
+            listBox.Items.Add("Name:\t\t");
+            listBox.Items.Add("Playtime:\t\t");
+            listBox.Items.Add("W/L:\t\t");
+            listBox.Items.Add("High Score:\t");
+            listBox.Items.Add("Match History:");
         }
 
         private void PlayerSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedPlayerName = PlayerSelect.SelectedItem.ToString();
+            ComboBox comboBox = (ComboBox)sender;
+
+            ListBox listBox = new ListBox();
+
+            string selectedPlayerName = "";
+
+            switch (comboBox.Name)
+            {
+                case "PlayerSelect":
+                    selectedPlayerName = PlayerSelect.SelectedItem.ToString();
+                    listBox = PlayerInfo;
+                    break;
+
+                case "PlayerOneSelection":
+                    selectedPlayerName = PlayerOneSelection.SelectedItem.ToString();
+                    listBox = PlayerOneInfoList;
+                    break;
+
+                case "PlayerTwoSelection":
+                    selectedPlayerName = PlayerTwoSelection.SelectedItem.ToString();
+                    listBox = PlayerTwoInfoList;
+                    break;
+
+                default:
+                    throw new Exception("Couldn't get the correct selection to use");
+            }
 
             FileManager.Player selectedPlayer = FileManager.FindPlayerWithName(selectedPlayerName);
 
-            LoadPlayerDataToPlayerInfo(selectedPlayer);
+            LoadPlayerDataToPlayerInfo(selectedPlayer, listBox);
         }
 
         /// <summary>
@@ -187,6 +274,60 @@ namespace Robo_s_Memory_Game
             PlayerSelect.SelectedItem = newPlayer.name;
         }
 
+        private void SaveLeft_Click(object sender, EventArgs e)
+        {
+            string newPlayerName = PlayerOneNameEntry.Text;
+
+            if (string.IsNullOrEmpty(newPlayerName))
+            {
+                NameWarningLeft.Visible = true;
+                NameWarningLeft.Text = "*Name cannot be empty";
+                return;
+            }
+            else
+            {
+                NameWarningLeft.Visible = false;
+            }
+
+            FileManager.Player newPlayer = new FileManager.Player();
+
+            newPlayer.name = newPlayerName;
+
+            FileManager.SavePlayerData(newPlayer);
+
+            PlayerOneSelection.Items.Add(newPlayer.name);
+            PlayerOneSelection.SelectedItem = newPlayer.name;
+
+            PlayerTwoSelection.Items.Add(newPlayer.name);
+        }
+
+        private void SaveRight_Click(object sender, EventArgs e)
+        {
+            string newPlayerName = PlayerTwoNameEntry.Text;
+
+            if (string.IsNullOrEmpty(newPlayerName))
+            {
+                NameWarningRight.Visible = true;
+                NameWarningRight.Text = "*Name cannot be empty";
+                return;
+            }
+            else
+            {
+                NameWarningRight.Visible = false;
+            }
+
+            FileManager.Player newPlayer = new FileManager.Player();
+
+            newPlayer.name = newPlayerName;
+
+            FileManager.SavePlayerData(newPlayer);
+
+            PlayerTwoSelection.Items.Add(newPlayer.name);
+            PlayerTwoSelection.SelectedItem = newPlayer.name;
+
+            PlayerOneSelection.Items.Add(newPlayer.name);
+        }
+
         /// <summary>
         /// Deletes the player entry currently selected
         /// </summary>
@@ -210,12 +351,65 @@ namespace Robo_s_Memory_Game
             PlayerSelect.SelectedIndex = 0;
         }
 
+        private void DeleteLeft_Click(object sender, EventArgs e)
+        {
+            if(PlayerOneSelection.Text == "New Player")
+            {
+                DeleteWarningLeft.Visible = true;
+                DeleteWarningLeft.Text = "*Cannot delete \n default \"New Player\" entry";
+                return;
+            }
+            else
+            {
+                DeleteWarningLeft.Visible = false;
+            }
+
+            FileManager.DeletePlayerWithName(PlayerOneSelection.SelectedItem.ToString());
+
+            if(PlayerOneSelection.SelectedItem == PlayerTwoSelection.SelectedItem)
+            {
+                PlayerTwoSelection.SelectedIndex = 0;
+            }
+
+            PlayerOneSelection.Items.Remove(PlayerOneSelection.SelectedItem);
+            PlayerTwoSelection.Items.Remove(PlayerTwoSelection.SelectedItem);
+
+            PlayerOneSelection.SelectedIndex = 0;
+        }
+
+        private void DeleteRight_Click(object sender, EventArgs e)
+        {
+            if (PlayerTwoSelection.Text == "New Player")
+            {
+                DeleteWarningRight.Visible = true;
+                DeleteWarningRight.Text = "*Cannot delete \n default \"New Player\" entry";
+                return;
+            }
+            else
+            {
+                DeleteWarningRight.Visible = false;
+            }
+
+            FileManager.DeletePlayerWithName(PlayerOneSelection.SelectedItem.ToString());
+
+            if (PlayerTwoSelection.SelectedItem == PlayerOneSelection.SelectedItem)
+            {
+                PlayerOneSelection.SelectedIndex = 0;
+            }
+
+            PlayerOneSelection.Items.Remove(PlayerOneSelection.SelectedItem);
+            PlayerTwoSelection.Items.Remove(PlayerTwoSelection.SelectedItem);
+
+            PlayerOneSelection.SelectedIndex = 0;
+        }
+
         /// <summary>
         /// Resetting menus to starting position
         /// </summary>
         private void ReturnToMain_Click(object sender, EventArgs e)
         {
             PlayerSelectionSinglePlayer.Visible = false;
+            PlayerSelectionVersus.Visible = false;
             ModeSelection.Visible = false;
             ReturnToMain.Visible = false;
             ImageSelectionPanel.Visible = false;
@@ -301,7 +495,7 @@ namespace Robo_s_Memory_Game
             }
 
 
-            MainForm mainForm = new MainForm(MainForm.GameMode.Single, player, SelectedImageShow.Image, gridSize);
+            MainForm mainForm = new MainForm(gameMode, player, SelectedImageShow.Image, gridSize, playerTwo);
 
             this.Visible = false;
 
@@ -309,5 +503,7 @@ namespace Robo_s_Memory_Game
 
             mainForm.ShowDialog();
         }
+
+        
     }
 }

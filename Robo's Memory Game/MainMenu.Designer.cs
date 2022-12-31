@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.Play = new System.Windows.Forms.Button();
             this.GameName = new System.Windows.Forms.Label();
             this.Exit = new System.Windows.Forms.Button();
@@ -49,9 +50,37 @@
             this.Confirm = new System.Windows.Forms.Button();
             this.ReturnToMain = new System.Windows.Forms.Button();
             this.ImageSelectionPanel = new System.Windows.Forms.Panel();
-            this.SelectCustomImageDialog = new System.Windows.Forms.OpenFileDialog();
-            this.LoadCustomImage = new System.Windows.Forms.Button();
+            this.GridSizeWarning = new System.Windows.Forms.Label();
+            this.GridSizeLable = new System.Windows.Forms.Label();
+            this.GridSizeTextBox = new System.Windows.Forms.TextBox();
+            this.SelectedImageWarningLable = new System.Windows.Forms.Label();
+            this.PlayButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.CustomImageRulesLable = new System.Windows.Forms.Label();
+            this.LoadCustomImage = new System.Windows.Forms.Button();
+            this.SelectCustomImageDialog = new System.Windows.Forms.OpenFileDialog();
+            this.PlayerSelectionVersus = new System.Windows.Forms.Panel();
+            this.PlayerOneInfoList = new System.Windows.Forms.ListBox();
+            this.PlayerTwoInfoList = new System.Windows.Forms.ListBox();
+            this.PlayerOneSelection = new System.Windows.Forms.ComboBox();
+            this.PlayerTwoSelection = new System.Windows.Forms.ComboBox();
+            this.PlayerOneNameEntry = new System.Windows.Forms.TextBox();
+            this.PlayerTwoNameEntry = new System.Windows.Forms.TextBox();
+            this.SaveLeft = new System.Windows.Forms.Button();
+            this.DeleteLeft = new System.Windows.Forms.Button();
+            this.DeleteRight = new System.Windows.Forms.Button();
+            this.SaveRight = new System.Windows.Forms.Button();
+            this.lable2 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.NameWarningLeft = new System.Windows.Forms.Label();
+            this.NameWarningRight = new System.Windows.Forms.Label();
+            this.DeleteWarningLeft = new System.Windows.Forms.Label();
+            this.DeleteWarningRight = new System.Windows.Forms.Label();
+            this.ConfirmVersus = new System.Windows.Forms.Button();
+            this.ConfirmVersusWarning = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.SelectedImageShow = new System.Windows.Forms.PictureBox();
             this.pictureBox16 = new System.Windows.Forms.PictureBox();
             this.pictureBox15 = new System.Windows.Forms.PictureBox();
             this.pictureBox14 = new System.Windows.Forms.PictureBox();
@@ -68,17 +97,12 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.SelectedImageShow = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.PlayButton = new System.Windows.Forms.Button();
-            this.SelectedImageWarningLable = new System.Windows.Forms.Label();
-            this.GridSizeTextBox = new System.Windows.Forms.TextBox();
-            this.GridSizeLable = new System.Windows.Forms.Label();
-            this.GridSizeWarning = new System.Windows.Forms.Label();
             this.EntryPointControls.SuspendLayout();
             this.ModeSelection.SuspendLayout();
             this.PlayerSelectionSinglePlayer.SuspendLayout();
             this.ImageSelectionPanel.SuspendLayout();
+            this.PlayerSelectionVersus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedImageShow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
@@ -95,7 +119,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SelectedImageShow)).BeginInit();
             this.SuspendLayout();
             // 
             // Play
@@ -360,20 +383,63 @@
             this.ImageSelectionPanel.TabIndex = 6;
             this.ImageSelectionPanel.Visible = false;
             // 
-            // SelectCustomImageDialog
+            // GridSizeWarning
             // 
-            this.SelectCustomImageDialog.Filter = "Image Files(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp";
-            this.SelectCustomImageDialog.Title = "Custom Background Image Select";
+            this.GridSizeWarning.AutoSize = true;
+            this.GridSizeWarning.ForeColor = System.Drawing.Color.Red;
+            this.GridSizeWarning.Location = new System.Drawing.Point(521, 205);
+            this.GridSizeWarning.Name = "GridSizeWarning";
+            this.GridSizeWarning.Size = new System.Drawing.Size(35, 13);
+            this.GridSizeWarning.TabIndex = 24;
+            this.GridSizeWarning.Text = "lable1";
+            this.GridSizeWarning.Visible = false;
             // 
-            // LoadCustomImage
+            // GridSizeLable
             // 
-            this.LoadCustomImage.Location = new System.Drawing.Point(373, 62);
-            this.LoadCustomImage.Name = "LoadCustomImage";
-            this.LoadCustomImage.Size = new System.Drawing.Size(100, 23);
-            this.LoadCustomImage.TabIndex = 16;
-            this.LoadCustomImage.Text = "Load Custom";
-            this.LoadCustomImage.UseVisualStyleBackColor = true;
-            this.LoadCustomImage.Click += new System.EventHandler(this.LoadCustomImage_Click);
+            this.GridSizeLable.AutoSize = true;
+            this.GridSizeLable.Location = new System.Drawing.Point(521, 166);
+            this.GridSizeLable.Name = "GridSizeLable";
+            this.GridSizeLable.Size = new System.Drawing.Size(52, 13);
+            this.GridSizeLable.TabIndex = 23;
+            this.GridSizeLable.Text = "Grid Size:";
+            // 
+            // GridSizeTextBox
+            // 
+            this.GridSizeTextBox.Location = new System.Drawing.Point(522, 182);
+            this.GridSizeTextBox.Name = "GridSizeTextBox";
+            this.GridSizeTextBox.Size = new System.Drawing.Size(199, 20);
+            this.GridSizeTextBox.TabIndex = 22;
+            // 
+            // SelectedImageWarningLable
+            // 
+            this.SelectedImageWarningLable.AutoSize = true;
+            this.SelectedImageWarningLable.ForeColor = System.Drawing.Color.Red;
+            this.SelectedImageWarningLable.Location = new System.Drawing.Point(582, 246);
+            this.SelectedImageWarningLable.Name = "SelectedImageWarningLable";
+            this.SelectedImageWarningLable.Size = new System.Drawing.Size(35, 13);
+            this.SelectedImageWarningLable.TabIndex = 21;
+            this.SelectedImageWarningLable.Text = "lable1";
+            this.SelectedImageWarningLable.Visible = false;
+            // 
+            // PlayButton
+            // 
+            this.PlayButton.Location = new System.Drawing.Point(585, 262);
+            this.PlayButton.Name = "PlayButton";
+            this.PlayButton.Size = new System.Drawing.Size(172, 43);
+            this.PlayButton.TabIndex = 20;
+            this.PlayButton.Text = "Play";
+            this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(556, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(125, 20);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Image Selected:";
             // 
             // CustomImageRulesLable
             // 
@@ -385,6 +451,253 @@
             this.CustomImageRulesLable.Text = "For best image result\r\nuse an image with\r\naspect ratio of 16:9.\r\n\r\nOtherwise the " +
     "image might\r\nappear stretched";
             this.CustomImageRulesLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LoadCustomImage
+            // 
+            this.LoadCustomImage.Location = new System.Drawing.Point(373, 62);
+            this.LoadCustomImage.Name = "LoadCustomImage";
+            this.LoadCustomImage.Size = new System.Drawing.Size(100, 23);
+            this.LoadCustomImage.TabIndex = 16;
+            this.LoadCustomImage.Text = "Load Custom";
+            this.LoadCustomImage.UseVisualStyleBackColor = true;
+            this.LoadCustomImage.Click += new System.EventHandler(this.LoadCustomImage_Click);
+            // 
+            // SelectCustomImageDialog
+            // 
+            this.SelectCustomImageDialog.Filter = "Image Files(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp";
+            this.SelectCustomImageDialog.Title = "Custom Background Image Select";
+            // 
+            // PlayerSelectionVersus
+            // 
+            this.PlayerSelectionVersus.Controls.Add(this.label4);
+            this.PlayerSelectionVersus.Controls.Add(this.label3);
+            this.PlayerSelectionVersus.Controls.Add(this.ConfirmVersusWarning);
+            this.PlayerSelectionVersus.Controls.Add(this.ConfirmVersus);
+            this.PlayerSelectionVersus.Controls.Add(this.DeleteWarningRight);
+            this.PlayerSelectionVersus.Controls.Add(this.DeleteWarningLeft);
+            this.PlayerSelectionVersus.Controls.Add(this.NameWarningRight);
+            this.PlayerSelectionVersus.Controls.Add(this.NameWarningLeft);
+            this.PlayerSelectionVersus.Controls.Add(this.label2);
+            this.PlayerSelectionVersus.Controls.Add(this.lable2);
+            this.PlayerSelectionVersus.Controls.Add(this.SaveRight);
+            this.PlayerSelectionVersus.Controls.Add(this.DeleteRight);
+            this.PlayerSelectionVersus.Controls.Add(this.DeleteLeft);
+            this.PlayerSelectionVersus.Controls.Add(this.SaveLeft);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerTwoNameEntry);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerOneNameEntry);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerTwoSelection);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerOneSelection);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerTwoInfoList);
+            this.PlayerSelectionVersus.Controls.Add(this.PlayerOneInfoList);
+            this.PlayerSelectionVersus.Location = new System.Drawing.Point(12, 38);
+            this.PlayerSelectionVersus.Name = "PlayerSelectionVersus";
+            this.PlayerSelectionVersus.Size = new System.Drawing.Size(760, 311);
+            this.PlayerSelectionVersus.TabIndex = 7;
+            this.PlayerSelectionVersus.Visible = false;
+            this.PlayerSelectionVersus.VisibleChanged += new System.EventHandler(this.PlayerSelectionVersus_VisibleChanged);
+            // 
+            // PlayerOneInfoList
+            // 
+            this.PlayerOneInfoList.FormattingEnabled = true;
+            this.PlayerOneInfoList.Location = new System.Drawing.Point(3, 62);
+            this.PlayerOneInfoList.Name = "PlayerOneInfoList";
+            this.PlayerOneInfoList.Size = new System.Drawing.Size(257, 238);
+            this.PlayerOneInfoList.TabIndex = 0;
+            // 
+            // PlayerTwoInfoList
+            // 
+            this.PlayerTwoInfoList.FormattingEnabled = true;
+            this.PlayerTwoInfoList.Location = new System.Drawing.Point(268, 62);
+            this.PlayerTwoInfoList.Name = "PlayerTwoInfoList";
+            this.PlayerTwoInfoList.Size = new System.Drawing.Size(257, 238);
+            this.PlayerTwoInfoList.TabIndex = 1;
+            // 
+            // PlayerOneSelection
+            // 
+            this.PlayerOneSelection.FormattingEnabled = true;
+            this.PlayerOneSelection.Location = new System.Drawing.Point(3, 37);
+            this.PlayerOneSelection.Name = "PlayerOneSelection";
+            this.PlayerOneSelection.Size = new System.Drawing.Size(121, 21);
+            this.PlayerOneSelection.TabIndex = 2;
+            this.PlayerOneSelection.Text = "New Player";
+            this.PlayerOneSelection.SelectedIndexChanged += new System.EventHandler(this.PlayerSelect_SelectedIndexChanged);
+            // 
+            // PlayerTwoSelection
+            // 
+            this.PlayerTwoSelection.FormattingEnabled = true;
+            this.PlayerTwoSelection.Location = new System.Drawing.Point(268, 37);
+            this.PlayerTwoSelection.Name = "PlayerTwoSelection";
+            this.PlayerTwoSelection.Size = new System.Drawing.Size(121, 21);
+            this.PlayerTwoSelection.TabIndex = 3;
+            this.PlayerTwoSelection.Text = "New Player";
+            this.PlayerTwoSelection.SelectedIndexChanged += new System.EventHandler(this.PlayerSelect_SelectedIndexChanged);
+            // 
+            // PlayerOneNameEntry
+            // 
+            this.PlayerOneNameEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayerOneNameEntry.Location = new System.Drawing.Point(130, 37);
+            this.PlayerOneNameEntry.Name = "PlayerOneNameEntry";
+            this.PlayerOneNameEntry.Size = new System.Drawing.Size(130, 21);
+            this.PlayerOneNameEntry.TabIndex = 4;
+            // 
+            // PlayerTwoNameEntry
+            // 
+            this.PlayerTwoNameEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayerTwoNameEntry.Location = new System.Drawing.Point(395, 37);
+            this.PlayerTwoNameEntry.Name = "PlayerTwoNameEntry";
+            this.PlayerTwoNameEntry.Size = new System.Drawing.Size(130, 21);
+            this.PlayerTwoNameEntry.TabIndex = 5;
+            // 
+            // SaveLeft
+            // 
+            this.SaveLeft.Location = new System.Drawing.Point(530, 62);
+            this.SaveLeft.Name = "SaveLeft";
+            this.SaveLeft.Size = new System.Drawing.Size(111, 47);
+            this.SaveLeft.TabIndex = 6;
+            this.SaveLeft.Text = "Save";
+            this.SaveLeft.UseVisualStyleBackColor = true;
+            this.SaveLeft.Click += new System.EventHandler(this.SaveLeft_Click);
+            // 
+            // DeleteLeft
+            // 
+            this.DeleteLeft.Location = new System.Drawing.Point(530, 115);
+            this.DeleteLeft.Name = "DeleteLeft";
+            this.DeleteLeft.Size = new System.Drawing.Size(111, 47);
+            this.DeleteLeft.TabIndex = 7;
+            this.DeleteLeft.Text = "Delete";
+            this.DeleteLeft.UseVisualStyleBackColor = true;
+            this.DeleteLeft.Click += new System.EventHandler(this.DeleteLeft_Click);
+            // 
+            // DeleteRight
+            // 
+            this.DeleteRight.Location = new System.Drawing.Point(646, 115);
+            this.DeleteRight.Name = "DeleteRight";
+            this.DeleteRight.Size = new System.Drawing.Size(111, 47);
+            this.DeleteRight.TabIndex = 8;
+            this.DeleteRight.Text = "Delete";
+            this.DeleteRight.UseVisualStyleBackColor = true;
+            this.DeleteRight.Click += new System.EventHandler(this.DeleteRight_Click);
+            // 
+            // SaveRight
+            // 
+            this.SaveRight.Location = new System.Drawing.Point(647, 62);
+            this.SaveRight.Name = "SaveRight";
+            this.SaveRight.Size = new System.Drawing.Size(111, 47);
+            this.SaveRight.TabIndex = 9;
+            this.SaveRight.Text = "Save";
+            this.SaveRight.UseVisualStyleBackColor = true;
+            this.SaveRight.Click += new System.EventHandler(this.SaveRight_Click);
+            // 
+            // lable2
+            // 
+            this.lable2.AutoSize = true;
+            this.lable2.Location = new System.Drawing.Point(127, 21);
+            this.lable2.Name = "lable2";
+            this.lable2.Size = new System.Drawing.Size(70, 13);
+            this.lable2.TabIndex = 10;
+            this.lable2.Text = "Player Name:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(392, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Player Name:";
+            // 
+            // NameWarningLeft
+            // 
+            this.NameWarningLeft.AutoSize = true;
+            this.NameWarningLeft.ForeColor = System.Drawing.Color.Red;
+            this.NameWarningLeft.Location = new System.Drawing.Point(127, 8);
+            this.NameWarningLeft.Name = "NameWarningLeft";
+            this.NameWarningLeft.Size = new System.Drawing.Size(35, 13);
+            this.NameWarningLeft.TabIndex = 12;
+            this.NameWarningLeft.Text = "label3";
+            this.NameWarningLeft.Visible = false;
+            // 
+            // NameWarningRight
+            // 
+            this.NameWarningRight.AutoSize = true;
+            this.NameWarningRight.ForeColor = System.Drawing.Color.Red;
+            this.NameWarningRight.Location = new System.Drawing.Point(392, 8);
+            this.NameWarningRight.Name = "NameWarningRight";
+            this.NameWarningRight.Size = new System.Drawing.Size(35, 13);
+            this.NameWarningRight.TabIndex = 13;
+            this.NameWarningRight.Text = "label4";
+            this.NameWarningRight.Visible = false;
+            // 
+            // DeleteWarningLeft
+            // 
+            this.DeleteWarningLeft.AutoSize = true;
+            this.DeleteWarningLeft.ForeColor = System.Drawing.Color.Red;
+            this.DeleteWarningLeft.Location = new System.Drawing.Point(531, 165);
+            this.DeleteWarningLeft.Name = "DeleteWarningLeft";
+            this.DeleteWarningLeft.Size = new System.Drawing.Size(35, 13);
+            this.DeleteWarningLeft.TabIndex = 14;
+            this.DeleteWarningLeft.Text = "label4";
+            this.DeleteWarningLeft.Visible = false;
+            // 
+            // DeleteWarningRight
+            // 
+            this.DeleteWarningRight.AutoSize = true;
+            this.DeleteWarningRight.ForeColor = System.Drawing.Color.Red;
+            this.DeleteWarningRight.Location = new System.Drawing.Point(646, 165);
+            this.DeleteWarningRight.Name = "DeleteWarningRight";
+            this.DeleteWarningRight.Size = new System.Drawing.Size(35, 13);
+            this.DeleteWarningRight.TabIndex = 15;
+            this.DeleteWarningRight.Text = "label4";
+            this.DeleteWarningRight.Visible = false;
+            // 
+            // ConfirmVersus
+            // 
+            this.ConfirmVersus.Location = new System.Drawing.Point(530, 254);
+            this.ConfirmVersus.Name = "ConfirmVersus";
+            this.ConfirmVersus.Size = new System.Drawing.Size(226, 46);
+            this.ConfirmVersus.TabIndex = 16;
+            this.ConfirmVersus.Text = "Confirm";
+            this.ConfirmVersus.UseVisualStyleBackColor = true;
+            this.ConfirmVersus.Click += new System.EventHandler(this.ConfirmVersus_Click);
+            // 
+            // ConfirmVersusWarning
+            // 
+            this.ConfirmVersusWarning.AutoSize = true;
+            this.ConfirmVersusWarning.ForeColor = System.Drawing.Color.Red;
+            this.ConfirmVersusWarning.Location = new System.Drawing.Point(531, 227);
+            this.ConfirmVersusWarning.Name = "ConfirmVersusWarning";
+            this.ConfirmVersusWarning.Size = new System.Drawing.Size(35, 13);
+            this.ConfirmVersusWarning.TabIndex = 17;
+            this.ConfirmVersusWarning.Text = "label4";
+            this.ConfirmVersusWarning.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 21);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 13);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Player One:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(266, 21);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Player Two:";
+            // 
+            // SelectedImageShow
+            // 
+            this.SelectedImageShow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SelectedImageShow.Location = new System.Drawing.Point(521, 28);
+            this.SelectedImageShow.Name = "SelectedImageShow";
+            this.SelectedImageShow.Size = new System.Drawing.Size(200, 100);
+            this.SelectedImageShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.SelectedImageShow.TabIndex = 18;
+            this.SelectedImageShow.TabStop = false;
             // 
             // pictureBox16
             // 
@@ -577,85 +890,19 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox_Click);
             // 
-            // SelectedImageShow
-            // 
-            this.SelectedImageShow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SelectedImageShow.Location = new System.Drawing.Point(521, 28);
-            this.SelectedImageShow.Name = "SelectedImageShow";
-            this.SelectedImageShow.Size = new System.Drawing.Size(200, 100);
-            this.SelectedImageShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.SelectedImageShow.TabIndex = 18;
-            this.SelectedImageShow.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(556, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 20);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Image Selected:";
-            // 
-            // PlayButton
-            // 
-            this.PlayButton.Location = new System.Drawing.Point(585, 262);
-            this.PlayButton.Name = "PlayButton";
-            this.PlayButton.Size = new System.Drawing.Size(172, 43);
-            this.PlayButton.TabIndex = 20;
-            this.PlayButton.Text = "Play";
-            this.PlayButton.UseVisualStyleBackColor = true;
-            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
-            // 
-            // SelectedImageWarningLable
-            // 
-            this.SelectedImageWarningLable.AutoSize = true;
-            this.SelectedImageWarningLable.ForeColor = System.Drawing.Color.Red;
-            this.SelectedImageWarningLable.Location = new System.Drawing.Point(582, 246);
-            this.SelectedImageWarningLable.Name = "SelectedImageWarningLable";
-            this.SelectedImageWarningLable.Size = new System.Drawing.Size(35, 13);
-            this.SelectedImageWarningLable.TabIndex = 21;
-            this.SelectedImageWarningLable.Text = "lable1";
-            this.SelectedImageWarningLable.Visible = false;
-            // 
-            // GridSizeTextBox
-            // 
-            this.GridSizeTextBox.Location = new System.Drawing.Point(522, 182);
-            this.GridSizeTextBox.Name = "GridSizeTextBox";
-            this.GridSizeTextBox.Size = new System.Drawing.Size(199, 20);
-            this.GridSizeTextBox.TabIndex = 22;
-            // 
-            // GridSizeLable
-            // 
-            this.GridSizeLable.AutoSize = true;
-            this.GridSizeLable.Location = new System.Drawing.Point(521, 166);
-            this.GridSizeLable.Name = "GridSizeLable";
-            this.GridSizeLable.Size = new System.Drawing.Size(52, 13);
-            this.GridSizeLable.TabIndex = 23;
-            this.GridSizeLable.Text = "Grid Size:";
-            // 
-            // GridSizeWarning
-            // 
-            this.GridSizeWarning.AutoSize = true;
-            this.GridSizeWarning.ForeColor = System.Drawing.Color.Red;
-            this.GridSizeWarning.Location = new System.Drawing.Point(521, 205);
-            this.GridSizeWarning.Name = "GridSizeWarning";
-            this.GridSizeWarning.Size = new System.Drawing.Size(35, 13);
-            this.GridSizeWarning.TabIndex = 24;
-            this.GridSizeWarning.Text = "lable1";
-            this.GridSizeWarning.Visible = false;
-            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 361);
+            this.Controls.Add(this.PlayerSelectionVersus);
             this.Controls.Add(this.ImageSelectionPanel);
             this.Controls.Add(this.ReturnToMain);
             this.Controls.Add(this.PlayerSelectionSinglePlayer);
             this.Controls.Add(this.ModeSelection);
             this.Controls.Add(this.GameName);
             this.Controls.Add(this.EntryPointControls);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(800, 400);
             this.MinimumSize = new System.Drawing.Size(800, 400);
             this.Name = "MainMenu";
@@ -667,6 +914,9 @@
             this.PlayerSelectionSinglePlayer.PerformLayout();
             this.ImageSelectionPanel.ResumeLayout(false);
             this.ImageSelectionPanel.PerformLayout();
+            this.PlayerSelectionVersus.ResumeLayout(false);
+            this.PlayerSelectionVersus.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedImageShow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
@@ -683,7 +933,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SelectedImageShow)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -738,5 +987,26 @@
         private System.Windows.Forms.Label GridSizeLable;
         private System.Windows.Forms.TextBox GridSizeTextBox;
         private System.Windows.Forms.Label GridSizeWarning;
+        private System.Windows.Forms.Panel PlayerSelectionVersus;
+        private System.Windows.Forms.ComboBox PlayerTwoSelection;
+        private System.Windows.Forms.ComboBox PlayerOneSelection;
+        private System.Windows.Forms.ListBox PlayerTwoInfoList;
+        private System.Windows.Forms.ListBox PlayerOneInfoList;
+        private System.Windows.Forms.TextBox PlayerTwoNameEntry;
+        private System.Windows.Forms.TextBox PlayerOneNameEntry;
+        private System.Windows.Forms.Button DeleteRight;
+        private System.Windows.Forms.Button DeleteLeft;
+        private System.Windows.Forms.Button SaveLeft;
+        private System.Windows.Forms.Button SaveRight;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lable2;
+        private System.Windows.Forms.Label NameWarningRight;
+        private System.Windows.Forms.Label NameWarningLeft;
+        private System.Windows.Forms.Label DeleteWarningRight;
+        private System.Windows.Forms.Label DeleteWarningLeft;
+        private System.Windows.Forms.Button ConfirmVersus;
+        private System.Windows.Forms.Label ConfirmVersusWarning;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }

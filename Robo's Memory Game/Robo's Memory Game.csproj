@@ -173,5 +173,8 @@
   <ItemGroup>
     <None Include="Resources\sunset-ge2ab301a5_1920.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Hero_Robo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,7 +16,8 @@ namespace Robo_s_Memory_Game
     /// </summary>
     public partial class VictoryScreen : Form
     {
-        private FileManager.Player player;
+        private FileManager.Player winnerPlayer;
+        private FileManager.Player loserPlayer;
         private FileManager.Match match;
 
         private TimeSpan playTime;
@@ -26,13 +27,15 @@ namespace Robo_s_Memory_Game
         /// <summary>
         /// Victory screen for the game
         /// </summary>
-        /// <param name="player">Player that won</param>
+        /// <param name="winnerPlayer">Player that won</param>
         /// <param name="score">Winning player's score</param>
         /// <param name="match">The match that was played</param>
-        public VictoryScreen(FileManager.Player player, int score, FileManager.Match match, TimeSpan playTime)
+        public VictoryScreen(FileManager.Player winnerPlayer,FileManager.Player loserPlayer, int score, 
+            FileManager.Match match, TimeSpan playTime)
         {
             InitializeComponent();
-            this.player = player;
+            this.winnerPlayer = winnerPlayer;
+            this.loserPlayer = loserPlayer;
             this.score = score;
             this.match = match;
             this.playTime = playTime;
@@ -61,15 +64,13 @@ namespace Robo_s_Memory_Game
         {
             Score.Text = score.ToString();
 
-            BestScore.Text = player.highScore.ToString();
+            BestScore.Text = winnerPlayer.highScore.ToString();
 
-            WinnerName.Text = player.name;
+            WinnerName.Text = winnerPlayer.name;
         }
 
         private void MainMenu_Click(object sender, EventArgs e)
         {
-            SavePlayerData();
-
             Owner.Owner.Visible = true;
 
             Close();
@@ -82,26 +83,32 @@ namespace Robo_s_Memory_Game
         /// </summary>
         private void SavePlayerData()
         {
-            if (score > player.highScore)
+            if (score > winnerPlayer.highScore)
             {
-                player.highScore = score;
+                winnerPlayer.highScore = score;
             }
 
-            if (player.matchHistory == null)
+            if (winnerPlayer.matchHistory == null)
             {
-                player.matchHistory = new List<FileManager.Match>();
+                winnerPlayer.matchHistory = new List<FileManager.Match>();
             }
 
-            player.matchHistory.Add(match);
+            if(loserPlayer.matchHistory == null)
+            {
+                loserPlayer.matchHistory = new List<FileManager.Match>();
+            }
+
+            winnerPlayer.matchHistory.Add(match);
+            loserPlayer.matchHistory.Add(match);
 
             List<FileManager.Match> wonMatchList = new List<FileManager.Match>();
             List<FileManager.Match> lostMatchList = new List<FileManager.Match>();
 
-            foreach (FileManager.Match match in player.matchHistory)
+            foreach (FileManager.Match match in winnerPlayer.matchHistory)
             {
                 if (match.matchType == "Versus")
                 {
-                    if (match.winnersName == player.name)
+                    if (match.winnersName == winnerPlayer.name)
                     {
                         wonMatchList.Add(match);
                     }
@@ -112,7 +119,7 @@ namespace Robo_s_Memory_Game
                 }
             }
 
-            player.playTime += playTime;
+            winnerPlayer.playTime += playTime;
 
             float winloseRatio;
 
@@ -125,15 +132,54 @@ namespace Robo_s_Memory_Game
                 winloseRatio = wonMatchList.Count;
             }
 
+            winnerPlayer.winToLoseRatio = winloseRatio;
 
-            player.winToLoseRatio = winloseRatio;
+            FileManager.SavePlayerData(winnerPlayer);
 
-            FileManager.SavePlayerData(player);
+            if (match.matchType == "Single") return;
+
+            wonMatchList.Clear();
+            lostMatchList.Clear();
+
+            foreach(FileManager.Match match in loserPlayer.matchHistory)
+            {
+                if(match.matchType == "Versus")
+                {
+                    if(match.winnersName == loserPlayer.name)
+                    {
+                        wonMatchList.Add(match);
+                    }
+                    else
+                    {
+                        lostMatchList.Add(match);
+                    }
+                }
+            }
+
+            loserPlayer.playTime += playTime;
+
+
+            try
+            {
+                winloseRatio = wonMatchList.Count / lostMatchList.Count;
+            }
+            catch
+            {
+                winloseRatio = wonMatchList.Count;
+            }
+
+            loserPlayer.winToLoseRatio = winloseRatio;
+
+            FileManager.SavePlayerData(loserPlayer);
         }
 
         private void VictoryScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SavePlayerData();
+            if(e.CloseReason != CloseReason.ApplicationExitCall)
+            {
+                SavePlayerData();
+            }
+            
             Owner.Close();
         }
     }

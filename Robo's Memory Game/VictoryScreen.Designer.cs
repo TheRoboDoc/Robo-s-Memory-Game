@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VictoryScreen));
             this.VictoryText = new System.Windows.Forms.Label();
             this.MainMenu = new System.Windows.Forms.Button();
             this.Exit = new System.Windows.Forms.Button();
@@ -139,6 +140,7 @@
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.VictoryText);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VictoryScreen";
             this.Text = "Robo\'s Memory Gane | VictoryScreen";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VictoryScreen_FormClosing);

@@ -16,8 +16,6 @@ namespace Robo_s_Memory_Game
     /// </summary>
     public partial class MainForm : Form
     {
-        //private const int GRIDDEBUGSIZE = 4; //For debug, need to replace this with user input later
-
         private int gridSize;
 
         private GameMode gameMode;
@@ -25,7 +23,8 @@ namespace Robo_s_Memory_Game
         private FileManager.Player playerOne;
         private FileManager.Player playerTwo;
 
-        private Image backgroundImage;
+        private bool playerOneTurn = true;
+        private bool playerTwoTurn = false;
 
         /// <summary>
         /// Main play form
@@ -33,6 +32,7 @@ namespace Robo_s_Memory_Game
         /// <param name="gameMode">Game mode to be played</param>
         /// <param name="playerOne">The first player</param>
         /// <param name="backgroundImage">The background image to be used</param>
+        /// <param name="gridSize">The size of the grid to use</param>
         /// <param name="playerTwo">The second player</param>
         public MainForm(GameMode gameMode, FileManager.Player playerOne, Image backgroundImage,
             int gridSize,FileManager.Player playerTwo = new FileManager.Player()) 
@@ -42,7 +42,6 @@ namespace Robo_s_Memory_Game
             this.gameMode = gameMode;
             this.playerOne = playerOne;
             this.playerTwo = playerTwo;
-            this.backgroundImage = backgroundImage;
             this.gridSize = gridSize;
 
             GenerateGrid();
@@ -55,7 +54,7 @@ namespace Robo_s_Memory_Game
                     SinglePlayerInfoPanel.Visible = true;
                     break;
                 case GameMode.Versus:
-                    //VersusPlayerInfoPanel.Visible = true;
+                    VersusPlayerInfoPanel.Visible = true;
                     break;
                 default:
                     throw new Exception("Failed to set a game mode");
@@ -63,6 +62,8 @@ namespace Robo_s_Memory_Game
 
             PlayTimer.Enabled = true;
             PlayTimer.Start();
+
+            TurnLable.Text = $"{playerOne.name}'s turn";
         }
 
         /// <summary>
@@ -135,7 +136,7 @@ namespace Robo_s_Memory_Game
 
             // Calculate the size of each button based on the number of rows and columns, and size of the grid area
             int buttonWidth = (BackGroundImage.Width + 4) / numColumns;
-            int buttonHeight = (BackGroundImage.Height) / numRows;
+            int buttonHeight = BackGroundImage.Height / numRows;
 
             unasignedtiles = new List<Button>();
 
@@ -151,6 +152,7 @@ namespace Robo_s_Memory_Game
                         Size = new Size(buttonWidth, buttonHeight),
                         Padding = new Padding(0),
                         BackColor = Color.White,
+                        ForeColor = Color.White,
                         FlatStyle = FlatStyle.Popup
                     };
 
@@ -176,7 +178,39 @@ namespace Robo_s_Memory_Game
 
             PlayTimer.Stop();
 
-            float fScore = float.Parse(CurrentScore.Text);
+            FileManager.Player winner = new FileManager.Player();
+            FileManager.Player loser = new FileManager.Player();
+
+            float fScore = 0;
+
+            if(gameMode == GameMode.Single)
+            {
+                fScore = float.Parse(CurrentScore.Text);
+                winner = playerOne;
+            }
+            else if(gameMode == GameMode.Versus)
+            {
+                int scoreOne = int.Parse(PlayerOneCurrentScore.Text);
+                int scoreTwo = int.Parse(PlayerTwoCurrentScore.Text);
+
+                if(scoreOne > scoreTwo)
+                {
+                    winner = playerOne;
+                    loser = playerTwo;
+                }
+                else if(scoreOne < scoreTwo)
+                {
+                    winner = playerTwo;
+                    loser = playerOne;
+                }
+                else
+                {
+                    GenerateGrid();
+                }
+
+                PlayerOneCurrentScore.Text = scoreOne.ToString();
+                PlayerTwoCurrentScore.Text = scoreTwo.ToString();
+            }
 
             int score = (int)Math.Round(fScore);
 
@@ -200,11 +234,11 @@ namespace Robo_s_Memory_Game
                 matchType = matchType,
                 mathDate = DateTime.Now,
                 playerNames = playerNames,
-                winnersName = playerOne.name,
+                winnersName = winner.name,
                 gridSize = gridSize
             };
 
-            VictoryScreen victoryScreen = new VictoryScreen(playerOne, score, currentMatch, timeSpan);
+            VictoryScreen victoryScreen = new VictoryScreen(winner, loser, score, currentMatch, timeSpan);
 
             victoryScreen.Owner = this;
 
@@ -268,7 +302,7 @@ namespace Robo_s_Memory_Game
             //Adds every Button with a tag "flipped" to a list of flipped tiles
             foreach (Button tile in assignedTiles)
             {
-                if(tile.Tag == "flipped")
+                if((string)tile.Tag == "flipped")
                 {
                     flippedTiles.Add(tile);
                 }
@@ -284,7 +318,19 @@ namespace Robo_s_Memory_Game
                     {
                         assignedTiles.Remove(tile);
                         tile.Dispose();
+                    }
+
+                    if (playerOneTurn)
+                    {
+                        playerOneTurn = true;
+                        playerTwoTurn = false;
                         GiveScoreToPlayer(playerOne);
+                    }
+                    else if (playerTwoTurn)
+                    {
+                        playerTwoTurn = true;
+                        playerOneTurn = false;
+                        GiveScoreToPlayer(playerTwo);
                     }
                 }
                 //If they are not returns them to default state
@@ -295,7 +341,27 @@ namespace Robo_s_Memory_Game
                         tile.Tag = string.Empty;
                         tile.BackColor = Color.White;
                     }
+
+                    if (playerOneTurn)
+                    {
+                        playerOneTurn = false;
+                        playerTwoTurn = true;
+                    }
+                    else if (playerTwoTurn)
+                    {
+                        playerTwoTurn = false;
+                        playerOneTurn = true;
+                    }
                 }
+            }
+
+            if (playerOneTurn)
+            {
+                TurnLable.Text = $"{playerOne.name}'s turn";
+            }
+            else if (playerTwoTurn)
+            {
+                TurnLable.Text = $"{playerTwo.name}'s turn";
             }
         }
 
@@ -311,22 +377,52 @@ namespace Robo_s_Memory_Game
         }
 
         /// <summary>
-        /// Gives the given player half a score
+        /// Gives the given player a score
         /// </summary>
         /// <param name="player"></param>
         private void GiveScoreToPlayer(FileManager.Player player)
         {
-            float currentScore = float.Parse(CurrentScore.Text);
+            float currentScore;
 
-            currentScore += 0.5F;
+            if (gameMode == GameMode.Single)
+            {
+                currentScore = float.Parse(CurrentScore.Text);
+                currentScore += 1;
 
-            CurrentScore.Text = currentScore.ToString();
+                CurrentScore.Text = currentScore.ToString();
+            }
+
+            if (gameMode != GameMode.Versus) return;
+
+            if(playerOneTurn)
+            {
+                currentScore = float.Parse(PlayerOneCurrentScore.Text);
+                currentScore += 1;
+
+                PlayerOneCurrentScore.Text = currentScore.ToString();
+            }
+            else if(playerTwoTurn)
+            {
+                currentScore = float.Parse(PlayerTwoCurrentScore.Text);
+                currentScore += 1;
+
+                PlayerTwoCurrentScore.Text = currentScore.ToString();
+            }
         }
 
         private void SinglePlayerInfoPanel_VisibleChanged(object sender, EventArgs e)
         {
             PlayerNameLable.Text = playerOne.name;
             BestScore.Text = playerOne.highScore.ToString();
+        }
+
+        private void VersusPlayerInfoPanel_VisibleChanged(object sender, EventArgs e)
+        {
+            PlayerOneName.Text = playerOne.name;
+            PlayerTwoName.Text = playerTwo.name;
+
+            PlayerOneBestScore.Text = playerOne.highScore.ToString();
+            PlayerTwoBestScore.Text = playerTwo.highScore.ToString();
         }
 
         private void ExitPlay_Click(object sender, EventArgs e)
@@ -348,6 +444,9 @@ namespace Robo_s_Memory_Game
             timeSpan += TimeSpan.FromSeconds(1);
 
             PlayTimeDisplay.Text = timeSpan.ToString();
+            VersusTimeDisplay.Text = timeSpan.ToString();
         }
+
+        
     }
 }
